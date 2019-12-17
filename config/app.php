@@ -1,6 +1,9 @@
 <?php
 
-return [
+$disable_web_routes = env('DISABLE_WEB_ROUTES', false);
+$use_email_verification = env('USE_EMAIL_VERIFICATION', true);
+
+$app = [
 
     /*
     |--------------------------------------------------------------------------
@@ -226,7 +229,18 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+
     ],
 
+    'disable_web_routes' => $disable_web_routes,
+    'use_email_verification' => $use_email_verification,
+
 ];
+
+if (!$disable_web_routes)
+{
+    $app['providers'][] = Barryvdh\Debugbar\ServiceProvider::class;
+    $app['aliases']['Debugbar'] = Barryvdh\Debugbar\Facade::class;
+}
+
+return $app;

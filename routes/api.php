@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+/*
+ * Route for /api/users ***
+ *      except function create() that render form for create and 'edit'
+ */
+Route::resource('users','UserController', ['except'=>['create','edit']]);
+Route::resource('category','CategoryController', ['except'=>['create','edit']]);
+Route::resource('posts','PostController', ['except'=>['create','edit']]);
