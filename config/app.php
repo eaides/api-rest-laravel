@@ -234,6 +234,7 @@ $app = [
 
     'disable_web_routes' => $disable_web_routes,
     'use_email_verification' => $use_email_verification,
+    'api_prefix' => 'api',
 
 ];
 

@@ -16,11 +16,24 @@ use Illuminate\Support\Facades\Route;
 
 $disable_web_routes = config('app.disable_web_routes');
 $use_email_verification = config('app.use_email_verification');
+$api_prefix = config('app.api_prefix');
 
 if ($disable_web_routes)
 {
+    Route::get('/', function () {
+        return response()->json([], 405);
+    });
+
+    Route::get('/'.$api_prefix, function () {
+        return response()->json([], 405);
+    });
+
     return;
 }
+
+Route::get('/'.$api_prefix, function () {
+    return response()->json([], 405);
+});
 
 Route::get('/', function () {
     return view('welcome');

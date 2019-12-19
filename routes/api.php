@@ -22,6 +22,6 @@ use Illuminate\Support\Facades\Route;
  * Route for /api/users ***
  *      except function create() that render form for create and 'edit'
  */
-Route::resource('users','UserController', ['except'=>['create','edit']]);
-Route::resource('category','CategoryController', ['except'=>['create','edit']]);
-Route::resource('posts','PostController', ['except'=>['create','edit']]);
+Route::resource('users','User.UserController', ['except'=>['create','edit']]);
+Route::resource('categories','Category.CategoryController', ['except'=>['create','edit']]);
+Route::resource('posts','Post.PostController', ['except'=>['create','edit']]);

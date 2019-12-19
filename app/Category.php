@@ -26,7 +26,25 @@ class Category extends Model
      * Get the posts for the user
      */
     public function posts() {
-        $this->hasMany('App\Posts');
+        $this->hasMany(Post::class);
+    }
+
+    /**
+     * Mutators
+     */
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtolower($value);
+    }
+
+    /**
+     * Accessors
+     */
+
+    public function getNameAttribute($value)
+    {
+        return ucwords($value);
     }
 
 }

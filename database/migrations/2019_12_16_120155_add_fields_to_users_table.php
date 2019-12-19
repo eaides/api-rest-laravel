@@ -19,9 +19,14 @@ class AddFieldsToUsersTable extends Migration
             $table->string('role', 20)
                 ->after('surname')
                 ->nullable();
-            $table->text('description')->after('password');
+            $table->text('description')
+                ->after('password')
+                ->nullable();
             $table->string('image')
                 ->after('description')
+                ->nullable();
+            $table->string('validation_token', 100)
+                ->after('remember_token')
                 ->nullable();
         });
     }

@@ -20,13 +20,14 @@ class CreatePostsTable extends Migration
             $table->string('title', 255);
             $table->text('content');
             $table->string('image')->nullable();
+            $table->timestamps();
+
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
             $table->foreign('category_id')
                 ->references('id')
                 ->on('categories');
-            $table->timestamps();
         });
     }
 
