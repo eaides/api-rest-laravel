@@ -4,9 +4,15 @@ namespace App\Exceptions;
 
 use App\Traits\ApiResponser;
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
@@ -57,44 +63,48 @@ class Handler extends ExceptionHandler
         if ($disable_web_routes || $request->is($pattern)) {
             if ($exception instanceof ValidationException)
             {
-                return $this->convertValidationExceptionToResponse($exception, $request);
+                $errors = $exception->validator->errors()->getMessages();
+                return $this->errorResponse($errors, 422);
             }
             if ($exception instanceof ModelNotFoundException)
             {
                 $model = strtolower(class_basename($exception->getModel()));
                 return $this->errorResponse("Model of type {$model} does not exists for the specified id", 404);
             }
-
-            // authentication todo
-
-            // authorization todo
-
+            if ($exception instanceof AuthenticationException)
+            {
+                return $this->errorResponse("User Unauthenticated", 401);
+            }
+            if ($exception instanceof UnauthorizedException)
+            {
+                return $this->errorResponse("User Unauthorized", 403);
+            }
             if ($exception instanceof NotFoundHttpException)
             {
                 return $this->errorResponse("The specified URL is invalid", 404);
             }
+            if ($exception instanceof MethodNotAllowedHttpException)
+            {
+                return $this->errorResponse("The HTTP method for the petition is invalid", 405);
+            }
+            if ($exception instanceof HttpException)
+            {
+                return $this->errorResponse($exception->getMessage(), $exception->getStatusCode());
+            }
+            if ($exception instanceof QueryException)
+            {
+                if ($exception->errorInfo[1] == 1451)
+                {
+                    return $this->errorResponse('Can not delete the resource because exists other relation resource(s)', 409);
+                }
+            }
 
+            // unexpected exception
+            if (!config('app.debug'))
+            {
+                return $this->errorResponse('Unexpected error', 500);
+            }
         }
         return parent::render($request, $exception);
     }
-
-    /**
-     * Create a response object from the given validation exception.
-     *
-     * @param  \Illuminate\Validation\ValidationException  $e
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function convertValidationExceptionToResponse(ValidationException $e, $request)
-    {
-        $disable_web_routes = config('app.disable_web_routes');
-        $pattern =  config('app.api_prefix') . '/*';
-        if ($disable_web_routes || $request->is($pattern))
-        {
-            $errors = $e->validator->errors()->getMessages();
-            return $this->errorResponse($errors, 422);
-        }
-        return parent::convertValidationExceptionToResponse($e, $request);
-    }
-
 }

@@ -14,19 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
 /*
  * Route for /api/users ***
- *      except function create() that render form for create and 'edit'
+ *      except function create() that render form for create and 'edit' that render form for edit
  */
-//Route::resource('users','User.UserController', ['except'=>['create','edit']]);
-//Route::resource('categories','Category.CategoryController', ['except'=>['create','edit']]);
-//Route::resource('posts','Post.PostController', ['except'=>['create','edit']]);
+//Route::resource('users','User\UserController', ['except'=>['create','edit']]);
+//Route::resource('categories','Category\CategoryController', ['except'=>['create','edit']]);
+//Route::resource('posts','Post\PostController', ['except'=>['create','edit']]);
 
-// apiResource automatically excludes 'create','edit'
-Route::apiResource('users','User\UserController', ['except'=>['create','edit']]);
-Route::apiResource('categories','Category\CategoryController', ['except'=>['create','edit']]);
-Route::apiResource('posts','Post\PostController', ['except'=>['create','edit']]);
+// use apiResource automatically that excludes 'create','edit'
+Route::apiResource('users','User\UserController');
+Route::apiResource('categories','Category\CategoryController');
+Route::apiResource('posts','Post\PostController');
