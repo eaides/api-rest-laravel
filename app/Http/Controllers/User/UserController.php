@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Auth\RegisterController;
@@ -19,6 +20,8 @@ use App\User;
  */
 class UserController extends RegisterController
 {
+    use ApiResponser;
+
     protected $empty_response_data = [];
 
     /**
@@ -36,14 +39,14 @@ class UserController extends RegisterController
      * method implemented in parent RegisterController
      * excepted in API routes declaration, never use directly
      *
-     * @param  array  $data
-     * @return \App\User
+     * @param  array|null $data
+     * @return \App\User|\Illuminate\Http\JsonResponse
      */
     public function create($data=null)
     {
         if (!$data || !is_array($data))
         {
-            return response()->json($this->empty_response_data, 405);
+            return $this->errorResponse('No data received', 405);
         }
         return parent::create($data);
     }
@@ -61,12 +64,12 @@ class UserController extends RegisterController
             $register = parent::register($request);
         } catch (ValidationException $exception)
         {
-            // todo return json with errors or more complex $data? // bad request 400
             $data = [
                 'status'    => 'error',
                 'code'      => 400,
                 'message'   => $exception->errors(),
             ];
+            // todo use trait functions // bad request 400
             return response()->json($data, 400);
         }
 die($register->content());
@@ -81,19 +84,6 @@ die($register->content());
     public function show($id)
     {
         //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * excepted in API routes declaration
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     * status 405: Method Not Allowed
-     */
-    public function edit($id)
-    {
-        return response()->json($this->empty_response_data, 405);
     }
 
     /**

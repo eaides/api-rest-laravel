@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\ApiController;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Category;
 
@@ -13,20 +14,21 @@ class CategoryController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $categories = Category::all();
 
-        return response()->json(['data' => $categories],200);
+        return $this->showAll($categories);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
@@ -39,24 +41,24 @@ class CategoryController extends ApiController
         $data = $request->all();
         // if need fix any data do:     $data['xxx'] = 'zzz';
 
-        /** @var Category $category */
+        /** @var Model $category */
         $category = Category::create($data);
 
-        return response()->json(['data' => $category],200);
+        return $this->showOne($category, 201);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
         /** @var Category $category */
         $category = Category::findOrFail($id);
 
-        return response()->json(['data' => $category],200);
+        return $this->showOne($category);
     }
 
     /**
@@ -64,7 +66,8 @@ class CategoryController extends ApiController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, $id)
     {
@@ -86,19 +89,20 @@ class CategoryController extends ApiController
         {
             // 422 = Unprocessable Entity (malformed petition)
             $msg = 'Must supply at least one different value to update';
-            return response()->json(['error' => $msg, 'code' => 422],422);
+            return $this->errorResponse($msg, 422);
         }
 
         $category->save();
 
-        return response()->json(['data' => $category],200);
+        return $this->showOne($category);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function destroy($id)
     {
@@ -107,6 +111,6 @@ class CategoryController extends ApiController
 
         $category->delete();
 
-        return response()->json(['data' => $category],200);
+        return $this->showOne($category);
     }
 }

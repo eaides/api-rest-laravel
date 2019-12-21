@@ -5,7 +5,7 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-trait ApiResponse
+trait ApiResponser
 {
     /**
      * @param $data
@@ -14,6 +14,8 @@ trait ApiResponse
      */
     private function successResponse($data, $code)
     {
+        $data['status'] = 'success';
+        $data['code'] = $code;
         return response()->json($data, $code);
     }
 
@@ -24,16 +26,23 @@ trait ApiResponse
      */
     protected function errorResponse($message, $code)
     {
-        return response()->json(['error' => $message, 'code' => $code],$code);
+        return response()->json([
+            'status'    => 'error',
+            'message'   => $message,
+            'code'      => $code
+        ],$code);
     }
 
     /**
      * @param Collection $collection
      * @param int $code
+     * @return \Illuminate\Http\JsonResponse
      */
     protected function showAll(Collection $collection, $code = 200)
     {
-       return $this->successResponse(['data' => $collection], $code);
+       return $this->successResponse([
+           'data' => $collection
+       ], $code);
     }
 
     /**
@@ -43,7 +52,9 @@ trait ApiResponse
      */
     protected function showOne(Model $instance, $code = 200)
     {
-        return $this->successResponse(['data' => $instance], $code);
+        return $this->successResponse([
+            'data' => $instance
+        ], $code);
     }
 
 }
