@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Traits\ApiResponser;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,7 +23,11 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
+    use RegistersUsers
+    {
+        register as public traitRegister;
+    }
+    use ApiResponser;
 
     /**
      * Where to redirect users after registration.
@@ -68,8 +74,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        // always create a new user with role User::ROLE_READER
-        // todo =>'validation_token'
         return User::create([
             'name' => $data['name'],
             'surname' => $data['surname'],
@@ -79,4 +83,38 @@ class RegisterController extends Controller
             'validation_token' => null,
         ]);
     }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  Request  $request
+     * @return User|\Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $disable_web_routes = config('app.disable_web_routes');
+        $pattern =  config('app.api_prefix') . '/*';
+        if ($disable_web_routes || $request->is($pattern)) {
+            $this->validator($request->all())->validate();
+
+            $user = $this->create($request->all());
+
+            $use_email_verification = config('app.use_email_verification');
+            if (!$use_email_verification)
+            {
+                $user->validation_token = null;
+                $user->email_verified_at = now();
+            }
+            else
+            {
+                $user->validation_token = User::generateVerificationToken();
+                $user->email_verified_at = null;
+            }
+            $user->save();
+
+            return $user;
+        }
+        return $this->traitRegister($request);
+    }
+
 }

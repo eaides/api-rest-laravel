@@ -55,24 +55,17 @@ class UserController extends RegisterController
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        try
+        $register = parent::register($request);
+
+        if ($register instanceof User)
         {
-            $register = parent::register($request);
-        } catch (ValidationException $exception)
-        {
-            $data = [
-                'status'    => 'error',
-                'code'      => 400,
-                'message'   => $exception->errors(),
-            ];
-            // todo use trait functions // bad request 400
-            return response()->json($data, 400);
+            return $this->showOne($register, 200);
         }
-die($register->content());
+        return $this->successMessage('user created');
     }
 
     /**
@@ -107,5 +100,18 @@ die($register->content());
     public function destroy($id)
     {
         //
+    }
+
+    public function verify($token)
+    {
+
+        $user = User::where('validation_token', $token)->firstOrFail();
+
+        $user->validation_token = null;
+        $user->email_verified_at = now();
+
+        $user->save();
+
+        return $this->showMessage('account verified succesfully');
     }
 }

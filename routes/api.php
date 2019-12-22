@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Route;
  * Route for /api/users ***
  *      except function create() that render form for create and 'edit' that render form for edit
  */
+Route::name('api.verify')->get('users/verify/{token}', 'User\UserController@verify');
+
+
 //Route::resource('users','User\UserController', ['except'=>['create','edit']]);
 //Route::resource('categories','Category\CategoryController', ['except'=>['create','edit']]);
 //Route::resource('posts','Post\PostController', ['except'=>['create','edit']]);
