@@ -21,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'role', 'email', 'password', 'description', 'image', 'validation_token',
+        'name', 'surname', 'role', 'email', 'password', 'description', 'image', 'verification_token',
     ];
 
     /**
@@ -30,7 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'validation_token',
+        'password', 'remember_token', 'verification_token',
     ];
 
     /**
@@ -75,6 +75,14 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * @return bool
      */
+    public function isVerified()
+    {
+        return (!is_null($this->email_verified_at));
+    }
+
+    /**
+     * @return bool
+     */
     public function isAdmin()
     {
         return ($this->role == self::ROLE_ADMIN);
@@ -96,7 +104,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public static function generateVerificationToken()
     {
-        return Str::random(100);
+        return Str::random(200);
     }
 
     /**

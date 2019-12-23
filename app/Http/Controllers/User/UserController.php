@@ -66,7 +66,7 @@ class UserController extends RegisterController
         {
             return $this->showOne($register, 200);
         }
-        return $this->successMessage('user created');
+        return $this->showMessage('user created');
     }
 
     /**
@@ -135,7 +135,7 @@ class UserController extends RegisterController
         {
             if (Helper::needApiValidation())
             {
-                $user->validation_token = User::generateVerificationToken();
+                $user->verification_token = User::generateVerificationToken();
                 $user->email_verified_at = null;
             }
             $user->email = $request->email;
@@ -174,10 +174,9 @@ class UserController extends RegisterController
 
     public function verify($token)
     {
+        $user = User::where('verification_token', $token)->firstOrFail();
 
-        $user = User::where('validation_token', $token)->firstOrFail();
-
-        $user->validation_token = null;
+        $user->verification_token = null;
         $user->email_verified_at = now();
 
         $user->save();

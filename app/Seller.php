@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Seller;
-
-use App\User;
-use Illuminate\Database\Eloquent\Model;
+namespace App;
 
 class Seller extends User
 {
-    //
+    public function products()
+    {
+        $this->hasMany(Product::class);
+    }
 }

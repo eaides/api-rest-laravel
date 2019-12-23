@@ -13,4 +13,23 @@ class Transaction extends Model
      */
     protected $table = 'transactions';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'quantity', 'buyer_id', 'product_id',
+    ];
+
+    protected function product()
+    {
+        $this->belongsTo(Product::class);
+    }
+
+    protected function buyer()
+    {
+        $this->belongsTo(Buyer::class);
+    }
+
 }

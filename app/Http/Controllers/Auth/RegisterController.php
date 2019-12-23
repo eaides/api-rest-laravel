@@ -63,7 +63,7 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'description' => [],
             'image' => ['string', 'max:255'],
-            'validation_token' => ['string', 'max:100'],
+            'verification_token' => ['string', 'max:200'],
         ]);
     }
 
@@ -75,9 +75,9 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        if (!isset($data['validation_token']))
+        if (!isset($data['verification_token']))
         {
-            $data['validation_token'] = null;
+            $data['verification_token'] = null;
         }
         return User::create([
             'name' => $data['name'],
@@ -85,7 +85,7 @@ class RegisterController extends Controller
             'role' => User::ROLE_READER,
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'validation_token' => $data['validation_token'],
+            'verification_token' => $data['verification_token'],
         ]);
     }
 
@@ -103,12 +103,12 @@ class RegisterController extends Controller
             $data = $request->all();
             if (Helper::needApiValidation())
             {
-                $data['validation_token']   = User::generateVerificationToken();
+                $data['verification_token']   = User::generateVerificationToken();
                 $data['email_verified_at']  = null;
             }
             else
             {
-                $data['validation_token']   = null;
+                $data['verification_token']   = null;
                 $data['email_verified_at']  = now();
             }
             $user = $this->create($data);

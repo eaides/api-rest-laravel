@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,14 +19,14 @@ class AddFieldsToUsersTable extends Migration
             $table->string('surname', 100)->after('name');
             $table->string('role', 20)
                 ->after('surname')
-                ->nullable();
+                ->default(User::ROLE_READER);
             $table->text('description')
                 ->after('password')
                 ->nullable();
             $table->string('image')
                 ->after('description')
                 ->nullable();
-            $table->string('validation_token', 100)
+            $table->string('verification_token', 200)
                 ->after('remember_token')
                 ->nullable();
         });
@@ -44,6 +45,7 @@ class AddFieldsToUsersTable extends Migration
             $table->dropColumn('role');
             $table->dropColumn('description');
             $table->dropColumn('image');
+            $table->dropColumn('verification_token');
         });
     }
 }

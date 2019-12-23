@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,5 +26,12 @@ Route::name('api.verify')->get('users/verify/{token}', 'User\UserController@veri
 
 // use apiResource automatically that excludes 'create','edit'
 Route::apiResource('users','User\UserController');
+
 Route::apiResource('sections','Section\SectionController');
 Route::apiResource('posts','Post\PostController');
+
+Route::apiResource('buyers','Buyer\BuyerController', ['only'=>['index','show']]);
+Route::apiResource('sellers','Seller\SellerController', ['only'=>['index','show']]);
+Route::apiResource('categories','Category\CategoryController', ['except'=>['create','edit']]);
+Route::apiResource('products','Product\ProductController', ['only'=>['index','show']]);
+Route::apiResource('transactions','Transaction\TransactionController', ['only'=>['index','show']]);

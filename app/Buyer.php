@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Buyer;
-
-use App\User;
-use Illuminate\Database\Eloquent\Model;
+namespace App;
 
 class Buyer extends User
 {
-    //
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }
