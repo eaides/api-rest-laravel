@@ -16,7 +16,7 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned()->nullable();
-            $table->bigInteger('category_id')->unsigned()->nullable();
+            $table->bigInteger('section_id')->unsigned()->nullable();
             $table->string('title', 255);
             $table->text('content');
             $table->string('image')->nullable();
@@ -25,9 +25,9 @@ class CreatePostsTable extends Migration
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
-            $table->foreign('category_id')
+            $table->foreign('section_id')
                 ->references('id')
-                ->on('categories');
+                ->on('sections');
         });
     }
 
