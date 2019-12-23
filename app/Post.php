@@ -40,11 +40,11 @@ class Post extends Model
     }
 
     /**
-     * Get the category for the post.
+     * Get the section for the post.
      */
-    public function category()
+    public function section()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Section::class);
     }
 
 }

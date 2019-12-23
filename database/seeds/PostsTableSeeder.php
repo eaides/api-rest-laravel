@@ -1,6 +1,6 @@
 <?php
 
-use App\Category;
+use App\Section;
 use App\Post;
 use App\User;
 use Illuminate\Database\Seeder;
@@ -20,20 +20,21 @@ class PostsTableSeeder extends Seeder
 
            $admin = User::where(['email'=>'admin@admin.com'])->first();
            $users_publishers = User::where(['role' => 'role_publisher'])->get();
-           $categories = Category::all();
+           $categories = Section::all();
            foreach($categories as $category)
            {
                 if ($admin)
                 {
                     factory(App\Post::class, 3)->create()->each(function ($post) use ($admin, $category) {
                         $post->user()->associate($admin);
-                        $post->category()->associate($category);
+                        $post->section()->associate($category);
                         $post->save();
                     });
                 }
                factory(App\Post::class, 20)->create()->each(function ($post) use ($users_publishers, $category) {
+                   /** Post $post */
                    $post->user()->associate($users_publishers->random());
-                   $post->category()->associate($category);
+                   $post->section()->associate($category);
                    $post->save();
                });
            }

@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Category;
+namespace App\Http\Controllers\Section;
 
 use App\Http\Controllers\ApiController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use App\Category;
+use App\Section;
 
-class CategoryController extends ApiController
+class SectionController extends ApiController
 {
-    protected $empty_response_data = [];
-
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +16,7 @@ class CategoryController extends ApiController
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Section::all();
 
         return $this->showAll($categories);
     }
@@ -42,7 +40,7 @@ class CategoryController extends ApiController
         // if need fix any data do:     $data['xxx'] = 'zzz';
 
         /** @var Model $category */
-        $category = Category::create($data);
+        $category = Section::create($data);
 
         return $this->showOne($category, 201);
     }
@@ -55,8 +53,8 @@ class CategoryController extends ApiController
      */
     public function show($id)
     {
-        /** @var Category $category */
-        $category = Category::findOrFail($id);
+        /** @var Section $category */
+        $category = Section::findOrFail($id);
 
         return $this->showOne($category);
     }
@@ -71,8 +69,8 @@ class CategoryController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        /** @var Category $category */
-        $category = Category::findOrFail($id);
+        /** @var Section $category */
+        $category = Section::findOrFail($id);
 
         $rules = [
             'name' => ['string', 'max:255'],
@@ -106,8 +104,8 @@ class CategoryController extends ApiController
      */
     public function destroy($id)
     {
-        /** @var Category $category */
-        $category = Category::findOrFail($id);
+        /** @var Section $category */
+        $category = Section::findOrFail($id);
 
         $category->delete();
 

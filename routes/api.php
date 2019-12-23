@@ -22,10 +22,10 @@ Route::name('api.verify')->get('users/verify/{token}', 'User\UserController@veri
 
 
 //Route::resource('users','User\UserController', ['except'=>['create','edit']]);
-//Route::resource('categories','Category\CategoryController', ['except'=>['create','edit']]);
+//Route::resource('categories','Section\SectionController', ['except'=>['create','edit']]);
 //Route::resource('posts','Post\PostController', ['except'=>['create','edit']]);
 
 // use apiResource automatically that excludes 'create','edit'
 Route::apiResource('users','User\UserController');
-Route::apiResource('categories','Category\CategoryController');
+Route::apiResource('sections','Section\SectionController');
 Route::apiResource('posts','Post\PostController');

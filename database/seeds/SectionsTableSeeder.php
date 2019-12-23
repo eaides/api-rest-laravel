@@ -1,9 +1,9 @@
 <?php
 
-use App\Category;
+use App\Section;
 use Illuminate\Database\Seeder;
 
-class CategoriesTableSeeder extends Seeder
+class SectionsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,19 +12,19 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        if (!Category::all()->count())
+        if (!Section::all()->count())
         {
-            Category::flushEventListeners();
+            Section::flushEventListeners();
 
-            factory(Category::class)->create([
+            factory(Section::class)->create([
                 'name' => 'desktop computers',
             ]);
 
-            factory(Category::class)->create([
+            factory(Section::class)->create([
                 'name' => 'laptop computers',
             ]);
 
-            factory(Category::class)->create([
+            factory(Section::class)->create([
                 'name' => 'mobiles and tablets',
             ]);
         }
