@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Traits\ApiResponser;
-use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use App\User;
+use App\Helpers\Helper;
+use App\Traits\ApiResponser;
 
 class RegisterController extends Controller
 {
@@ -74,13 +75,17 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        if (!isset($data['validation_token']))
+        {
+            $data['validation_token'] = null;
+        }
         return User::create([
             'name' => $data['name'],
             'surname' => $data['surname'],
             'role' => User::ROLE_READER,
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'validation_token' => null,
+            'validation_token' => $data['validation_token'],
         ]);
     }
 
@@ -92,25 +97,21 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        $disable_web_routes = config('app.disable_web_routes');
-        $pattern =  config('app.api_prefix') . '/*';
-        if ($disable_web_routes || $request->is($pattern)) {
+        if (Helper::isApiRequest()) {
             $this->validator($request->all())->validate();
 
-            $user = $this->create($request->all());
-
-            $use_email_verification = config('app.use_email_verification');
-            if (!$use_email_verification)
+            $data = $request->all();
+            if (Helper::needApiValidation())
             {
-                $user->validation_token = null;
-                $user->email_verified_at = now();
+                $data['validation_token']   = User::generateVerificationToken();
+                $data['email_verified_at']  = null;
             }
             else
             {
-                $user->validation_token = User::generateVerificationToken();
-                $user->email_verified_at = null;
+                $data['validation_token']   = null;
+                $data['email_verified_at']  = now();
             }
-            $user->save();
+            $user = $this->create($data);
 
             return $user;
         }

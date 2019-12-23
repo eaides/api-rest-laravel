@@ -14,6 +14,8 @@ class CategoriesTableSeeder extends Seeder
     {
         if (!Category::all()->count())
         {
+            Category::flushEventListeners();
+
             factory(Category::class)->create([
                 'name' => 'desktop computers',
             ]);

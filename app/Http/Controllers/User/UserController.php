@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Helpers\Helper;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Auth\RegisterController;
 use App\User;
-
-//
 
 /**
  * Class UserController
@@ -27,11 +26,13 @@ class UserController extends RegisterController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        return response('not implemented yet');
+        $users = User::all();
+
+        return $this->showAll($users);
     }
 
     /**
@@ -72,11 +73,14 @@ class UserController extends RegisterController
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
+        /** @var User $user */
+        $user = User::findOrFail($id);
+
+        return $this->showOne($user);
     }
 
     /**
@@ -84,11 +88,77 @@ class UserController extends RegisterController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     * @throws ValidationException
      */
     public function update(Request $request, $id)
     {
-        //
+        /** @var User $user */
+        $user = User::findOrFail($id);
+
+        $rules = [
+            'name' => ['string', 'max:50'],
+            'surname' => ['string', 'max:100'],
+            'role' => ['in:'.User::ROLE_PUBLISHER.','.User::ROLE_READER.','.USER::ROLE_ADMIN,],
+            'email' => ['string', 'email', 'max:255', 'unique:users,email,'.$user->id],
+            'description' => [],
+            'image' => ['string', 'max:255'],
+        ];
+
+        $this->validate($request, $rules);
+
+        /* password will be updated in other method */
+
+        if ($request->has('name'))
+        {
+            $user->name = $request->name;
+        }
+
+        if ($request->has('surname'))
+        {
+            $user->surname = $request->surname;
+        }
+
+        if ($request->has('role'))
+        {
+            // todo: check if the authenticated user can change this (is admin)
+
+            /* the user must be verified */
+            if (is_null($user->email_verified_at))
+            {
+                return $this->errorResponse('The role can be change only for verified users', 409);
+            }
+            $user->role = $request->role;
+        }
+
+        if ($request->has('email') && $user->email != $request->email)
+        {
+            if (Helper::needApiValidation())
+            {
+                $user->validation_token = User::generateVerificationToken();
+                $user->email_verified_at = null;
+            }
+            $user->email = $request->email;
+        }
+
+        if ($request->has('surname'))
+        {
+            $user->description = $request->description;
+        }
+
+        if ($request->has('image'))
+        {
+            $user->image = $request->image;
+        }
+
+        if (!$user->isDirty())
+        {
+            return $this->errorResponse('At least one value must change in order to edit the user', 422);
+        }
+
+        $user->save();
+
+        return $this->showOne($user);
     }
 
     /**

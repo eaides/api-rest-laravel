@@ -16,6 +16,8 @@ class PostsTableSeeder extends Seeder
     {
         if (!Post::all()->count())
         {
+           Post::flushEventListeners();
+
            $admin = User::where(['email'=>'admin@admin.com'])->first();
            $users_publishers = User::where(['role' => 'role_publisher'])->get();
            $categories = Category::all();

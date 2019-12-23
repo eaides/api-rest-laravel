@@ -14,6 +14,8 @@ class UsersTableSeeder extends Seeder
     {
         if (!User::all()->count())
         {
+            User::flushEventListeners();
+
             factory(User::class)->create([
                 'name' => 'admin',
                 'surname' => 'admin',
