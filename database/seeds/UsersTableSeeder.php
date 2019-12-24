@@ -2,6 +2,7 @@
 
 use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UsersTableSeeder extends Seeder
 {
@@ -15,6 +16,7 @@ class UsersTableSeeder extends Seeder
         if (!User::all()->count())
         {
             User::flushEventListeners();
+            DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
             factory(User::class)->create([
                 'name' => 'admin',
@@ -31,6 +33,19 @@ class UsersTableSeeder extends Seeder
             factory(App\User::class, 25)->create([
                 'role' => 'role_reader',
             ]);
+
+            factory(App\User::class, 2)->create([
+                'role' => 'role_admin',
+            ]);
+
+            factory(App\User::class, 2)->create([
+                'role' => 'role_bad',
+            ]);
+
+            $quantity = 500;
+            factory(App\User::class, $quantity)->create();
+
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1');
         }
     }
 }

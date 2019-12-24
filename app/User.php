@@ -16,6 +16,13 @@ class User extends Authenticatable implements MustVerifyEmail
     use Notifiable;
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -44,9 +51,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Get the posts for the user
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function posts() {
-        $this->hasMany(Post::class);
+        return $this->hasMany(Post::class);
     }
 
     /**
@@ -108,9 +116,8 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Mutators
+     * Mutator
      */
-
     public function setEmailAttribute($value)
     {
         $this->attributes['email'] = strtolower($value);
@@ -129,7 +136,6 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Accessors
      */
-
     public function getNameAttribute($value)
     {
         return ucwords($value);

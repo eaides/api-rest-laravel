@@ -65,18 +65,27 @@ class Product extends Model
         return (!$this->isAvailable());
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function categories()
     {
-        $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function seller()
     {
-        $this->belongsTo(Seller::class);
+        return $this->belongsTo(Seller::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function transactions()
     {
-        $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class);
     }
 }

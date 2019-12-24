@@ -33,6 +33,7 @@ class Post extends Model
 
     /**
      * Get the user for the post.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
@@ -41,6 +42,7 @@ class Post extends Model
 
     /**
      * Get the section for the post.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function section()
     {

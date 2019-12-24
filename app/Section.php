@@ -24,15 +24,15 @@ class Section extends Model
 
     /**
      * Get the posts for the user
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function posts() {
-        $this->hasMany(Post::class);
+        return $this->hasMany(Post::class);
     }
 
     /**
-     * Mutators
+     * Mutator
      */
-
     public function setNameAttribute($value)
     {
         $this->attributes['name'] = strtolower($value);
@@ -41,7 +41,6 @@ class Section extends Model
     /**
      * Accessors
      */
-
     public function getNameAttribute($value)
     {
         return ucwords($value);

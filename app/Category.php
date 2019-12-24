@@ -22,9 +22,12 @@ class Category extends Model
         'name', 'description',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function products()
     {
-        $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class);
     }
 
 }

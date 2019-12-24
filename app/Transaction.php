@@ -22,14 +22,20 @@ class Transaction extends Model
         'quantity', 'buyer_id', 'product_id',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     protected function product()
     {
-        $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     protected function buyer()
     {
-        $this->belongsTo(Buyer::class);
+        return $this->belongsTo(Buyer::class);
     }
 
 }

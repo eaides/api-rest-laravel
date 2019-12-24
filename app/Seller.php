@@ -4,8 +4,11 @@ namespace App;
 
 class Seller extends User
 {
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function products()
     {
-        $this->hasMany(Product::class);
+        return $this->hasMany(Product::class);
     }
 }

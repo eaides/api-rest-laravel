@@ -2,6 +2,7 @@
 
 use App\Section;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class SectionsTableSeeder extends Seeder
 {
@@ -15,6 +16,7 @@ class SectionsTableSeeder extends Seeder
         if (!Section::all()->count())
         {
             Section::flushEventListeners();
+            DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
             factory(Section::class)->create([
                 'name' => 'desktop computers',
@@ -27,6 +29,8 @@ class SectionsTableSeeder extends Seeder
             factory(Section::class)->create([
                 'name' => 'mobiles and tablets',
             ]);
+
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1');
         }
     }
 }
