@@ -17,6 +17,8 @@ class ProductSeeder extends Seeder
             Product::flushEventListeners();
             DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
+            DB::table('category_product')->truncate();
+
             $quantity = 1000;
             factory(App\Product::class, $quantity)->create()->each(
                 function(Product $product) {
@@ -26,8 +28,6 @@ class ProductSeeder extends Seeder
                     $product->categories()->attach($categories);
                 }
             );
-
-            DB::table('category_product')->truncate();
 
             DB::statement('SET FOREIGN_KEY_CHECKS = 1');
         }

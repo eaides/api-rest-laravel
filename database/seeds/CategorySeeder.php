@@ -20,8 +20,6 @@ class CategorySeeder extends Seeder
             $quantity = 30;
             factory(App\Category::class, $quantity)->create();
 
-            DB::table('category_product')->truncate();
-
             DB::statement('SET FOREIGN_KEY_CHECKS = 1');
         }
     }
