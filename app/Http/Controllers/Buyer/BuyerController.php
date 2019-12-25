@@ -2,30 +2,40 @@
 
 namespace App\Http\Controllers\Buyer;
 
+use App\Buyer;
 use App\Http\Controllers\ApiController;
-use Illuminate\Http\Request;
 
 class BuyerController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        $buyers = Buyer::has('transactions')->get();
+
+        return $this->showAll($buyers);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * by default here can not use implicit model injection
+     * because need to check if the Buyer (=User) has transactions
+     * Can resolve by using global scopes for the Model Buyer
+     *
+     * deprecated @param  int  $id
+     * @param Buyer $buyer
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(Buyer $buyer)
     {
-        //
+        // deprecated
+        // $buyer = Buyer::has('transactions')->findOrFail($id);
+
+        return $this->showOne($buyer);
     }
 
 }

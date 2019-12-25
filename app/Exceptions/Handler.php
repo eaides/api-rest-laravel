@@ -42,7 +42,9 @@ class Handler extends ExceptionHandler
      * Report or log an exception.
      *
      * @param  \Exception  $exception
-     * @return void
+     * @return mixed
+     *
+     * @throws \Exception
      */
     public function report(Exception $exception)
     {
@@ -95,7 +97,7 @@ class Handler extends ExceptionHandler
             {
                 if ($exception->errorInfo[1] == 1451)
                 {
-                    return $this->errorResponse('Can not delete the resource because exists other relation resource(s)', 409);
+                    return $this->errorResponse('Can not delete the resource because exists other resource(s) relational', 409);
                 }
             }
 

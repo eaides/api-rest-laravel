@@ -20,11 +20,11 @@ class AddFieldsToUsersTable extends Migration
             $table->string('role', 20)
                 ->after('surname')
                 ->default(User::ROLE_READER);
-            $table->text('description')
+            $table->text('bio')
                 ->after('password')
                 ->nullable();
             $table->string('image')
-                ->after('description')
+                ->after('bio')
                 ->nullable();
             $table->string('verification_token', 200)
                 ->after('remember_token')
@@ -43,7 +43,7 @@ class AddFieldsToUsersTable extends Migration
             $table->string('name', 255)->change();
             $table->dropColumn('surname');
             $table->dropColumn('role');
-            $table->dropColumn('description');
+            $table->dropColumn('bio');
             $table->dropColumn('image');
             $table->dropColumn('verification_token');
         });

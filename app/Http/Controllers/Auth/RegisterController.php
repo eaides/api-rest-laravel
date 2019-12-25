@@ -61,7 +61,6 @@ class RegisterController extends Controller
             'role' => ['string', 'max:20'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'description' => [],
             'image' => ['string', 'max:255'],
             'verification_token' => ['string', 'max:200'],
         ]);
@@ -79,6 +78,9 @@ class RegisterController extends Controller
         {
             $data['verification_token'] = null;
         }
+        /** bio and image are not part of the create user
+         *  there can be filled as part of the update process
+         */
         return User::create([
             'name' => $data['name'],
             'surname' => $data['surname'],

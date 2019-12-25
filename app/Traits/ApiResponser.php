@@ -48,6 +48,7 @@ trait ApiResponser
     /**
      * @param Model $instance
      * @param int $code
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     protected function showOne(Model $instance, $code = 200)

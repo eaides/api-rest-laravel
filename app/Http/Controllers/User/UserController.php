@@ -21,8 +21,6 @@ class UserController extends RegisterController
 {
     use ApiResponser;
 
-    protected $empty_response_data = [];
-
     /**
      * Display a listing of the resource.
      *
@@ -37,8 +35,9 @@ class UserController extends RegisterController
 
     /**
      * Create a new user instance after a valid registration.
-     * method implemented in parent RegisterController
-     * excepted in API routes declaration, never use directly
+     * This method is implemented and called in the parent RegisterController
+     * The method is excepted on API routes declaration,
+     * never use this method directly
      *
      * @param  array|null $data
      * @return \App\User|\Illuminate\Http\JsonResponse
@@ -61,24 +60,33 @@ class UserController extends RegisterController
     public function store(Request $request)
     {
         $register = parent::register($request);
-
         if ($register instanceof User)
         {
-            return $this->showOne($register, 200);
+            return $this->showOne($register, 201);
         }
-        return $this->showMessage('user created');
+        return $this->errorResponse('Can not create new User', 500);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * deprecated @param  int  $id
+     * @param  User $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(User $user)
     {
-        /** @var User $user */
-        $user = User::findOrFail($id);
+        /* can receive an $id and search with findOrFail
+
+         * $user = User::findOrFail($id);
+         *
+         * or can refactor the method to receive (as implicit injection)
+         *      the desired model
+         * In that case the name of the parameter must be the same
+         * as the name passed by the route.
+         * Can check with artisan route:list
+         */
+//        $user = User::findOrFail($id);
 
         return $this->showOne($user);
     }
@@ -87,21 +95,22 @@ class UserController extends RegisterController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * deprecated @param  int  $id
+     * @param User $user
+     *
      * @return \Illuminate\Http\JsonResponse
      * @throws ValidationException
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        /** @var User $user */
-        $user = User::findOrFail($id);
+        // /** @var User $user */
+        // $user = User::findOrFail($id);
 
         $rules = [
             'name' => ['string', 'max:50'],
             'surname' => ['string', 'max:100'],
             'role' => ['in:'.User::ROLE_PUBLISHER.','.User::ROLE_READER.','.USER::ROLE_ADMIN,],
             'email' => ['string', 'email', 'max:255', 'unique:users,email,'.$user->id],
-            'description' => [],
             'image' => ['string', 'max:255'],
         ];
 
@@ -121,11 +130,16 @@ class UserController extends RegisterController
 
         if ($request->has('role'))
         {
-            // todo: check if the authenticated user can change this (is admin)
+            /*
+             * @todo: check if the authenticated user can change this (is admin)
+             *      401 = Unauthorized
+             * return $this->errorResponse('The authenticated user has not privileges to change the role of an user', 401);
+             */
 
             /* the user must be verified */
             if (is_null($user->email_verified_at))
             {
+                /** 409 - Conflict */
                 return $this->errorResponse('The role can be change only for verified users', 409);
             }
             $user->role = $request->role;
@@ -141,9 +155,9 @@ class UserController extends RegisterController
             $user->email = $request->email;
         }
 
-        if ($request->has('surname'))
+        if ($request->has('bio'))
         {
-            $user->description = $request->description;
+            $user->bio = $request->bio;
         }
 
         if ($request->has('image'))
@@ -164,12 +178,29 @@ class UserController extends RegisterController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * deprecated @param  int  $id
+     * @param User $user
+     *
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        /*
+        *  @todo: check if the authenticated user can change this (is admin)
+        *       401 = Unauthorized
+        * return $this->errorResponse('The authenticated user has not privileges to delete other users', 401);
+        */
+
+        /*
+        *  @todo: check if the authenticated user is the same user to be eliminated
+        *       409 - Conflict
+        * return $this->errorResponse('The authenticated user can not be deleted (don't try suicide)', 409);
+        */
+
+        $user->delete();
+
+        return $this->showOne($user);
     }
 
     public function verify($token)

@@ -16,9 +16,9 @@ class SectionController extends ApiController
      */
     public function index()
     {
-        $categories = Section::all();
+        $sections = Section::all();
 
-        return $this->showAll($categories);
+        return $this->showAll($sections);
     }
 
     /**
@@ -26,6 +26,7 @@ class SectionController extends ApiController
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
@@ -39,38 +40,41 @@ class SectionController extends ApiController
         $data = $request->all();
         // if need fix any data do:     $data['xxx'] = 'zzz';
 
-        /** @var Model $category */
-        $category = Section::create($data);
+        /** @var Model $section */
+        $section = Section::create($data);
 
-        return $this->showOne($category, 201);
+        return $this->showOne($section, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * deprecated @param  int  $id
+     * @param Section $section
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(Section $section)
     {
-        /** @var Section $category */
-        $category = Section::findOrFail($id);
+        // /** @var Section $section */
+        // $section = Section::findOrFail($id);
 
-        return $this->showOne($category);
+        return $this->showOne($section);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * deprecated @param  int  $id
+     * @param Section $section
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Section $section)
     {
-        /** @var Section $category */
-        $category = Section::findOrFail($id);
+        // /** @var Section $section */
+        // $section = Section::findOrFail($id);
 
         $rules = [
             'name' => ['string', 'max:255'],
@@ -80,35 +84,38 @@ class SectionController extends ApiController
 
         if ($request->has('name'))
         {
-            $category->name = $request->name;
+            $section->name = $request->name;
         }
 
-        if (!$category->isDirty())
+        if (!$section->isDirty())
         {
             // 422 = Unprocessable Entity (malformed petition)
             $msg = 'Must supply at least one different value to update';
             return $this->errorResponse($msg, 422);
         }
 
-        $category->save();
+        $section->save();
 
-        return $this->showOne($category);
+        return $this->showOne($section);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param $id
+     * deprecated @param $id
+     * @param Section $section
+     *
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Section $section )
     {
-        /** @var Section $category */
-        $category = Section::findOrFail($id);
+        // /** @var Section $section */
+        // $section = Section::findOrFail($id);
 
-        $category->delete();
+        $section->delete();
 
-        return $this->showOne($category);
+        return $this->showOne($section);
     }
 }

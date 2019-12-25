@@ -11,6 +11,7 @@ $factory->define(Product::class, function (Faker $faker) {
 
     $path = Helper::getGetPublicSubFolder('img');
     $images = Helper::getFileNamesInFolder($path, false, false, true);
+    $images[] = null;
 
     return [
         'name' => $faker->word,
