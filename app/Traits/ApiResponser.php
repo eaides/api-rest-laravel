@@ -33,6 +33,13 @@ trait ApiResponser
         ],$code);
     }
 
+    protected function errorUpdateNoChanges()
+    {
+        $msg = 'Must supply at least one different value to update';
+        $code = 422;    // Unprocessable Entity (malformed petition)
+        return $this->errorResponse($msg, $code);
+    }
+
     /**
      * @param Collection $collection
      * @param int $code

@@ -21,6 +21,7 @@ class CreatePostsTable extends Migration
             $table->text('content');
             $table->string('image')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')
                 ->references('id')

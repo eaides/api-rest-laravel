@@ -3,17 +3,26 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
+
+    use Notifiable, SoftDeletes;
+
     const ROLE_ADMIN = 'role_admin';
     const ROLE_PUBLISHER = 'role_publisher';
     const ROLE_READER = 'role_reader';
 
-    use Notifiable;
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     /**
      * The table associated with the model.

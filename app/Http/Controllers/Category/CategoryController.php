@@ -79,21 +79,46 @@ class CategoryController extends ApiController
 
         $this->validate($request, $rules);
 
-        if ($request->has('name'))
-        {
-            $category->name = $request->name;
-        }
+        /**
+         * This is one method to do this:
+         *
+         *          if ($request->has('name'))
+         *          {
+         *              $category->name = $request->name;
+         *          }
+         *
+         *          if ($request->has('description'))
+         *          {
+         *              $category->description = $request->description;
+         *          }
+         *
+         *          if (!$category->isDirty())
+         *          {
+         *              // 422 = Unprocessable Entity (malformed petition)
+         *              $msg = 'Must supply at least one different value to update';
+         *              return $this->errorResponse($msg, 422);
+         *          }
+         *
+         * Below other method to do the same:
+         */
 
-        if ($request->has('description'))
-        {
-            $category->description = $request->description;
-        }
+        /*
+         * Fill the model with an array of attributes.
+         * do NOT save to the DB until explicit call to the function ->save()
+         *
+         * The intersect method removes any values from the original collection
+         * that are not present in the given array or collection.
+         * The resulting collection will preserve the original
+         * collection's keys:
+         */
+        $category->fill($request->intersect([
+            'name',
+            'description',
+        ]));
 
-        if (!$category->isDirty())
+        if (!$category->isClean())
         {
-            // 422 = Unprocessable Entity (malformed petition)
-            $msg = 'Must supply at least one different value to update';
-            return $this->errorResponse($msg, 422);
+            return $this->errorUpdateNoChanges();
         }
 
         $category->save();

@@ -28,6 +28,7 @@ class CreateTransactionsTable extends Migration
                 ->on('products');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

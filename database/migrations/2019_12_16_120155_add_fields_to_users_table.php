@@ -29,6 +29,7 @@ class AddFieldsToUsersTable extends Migration
             $table->string('verification_token', 200)
                 ->after('remember_token')
                 ->nullable();
+            $table->softDeletes();
         });
     }
 
@@ -46,6 +47,7 @@ class AddFieldsToUsersTable extends Migration
             $table->dropColumn('bio');
             $table->dropColumn('image');
             $table->dropColumn('verification_token');
+            $table->dropSoftDeletes();
         });
     }
 }

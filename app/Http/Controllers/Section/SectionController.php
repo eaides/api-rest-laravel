@@ -89,9 +89,7 @@ class SectionController extends ApiController
 
         if (!$section->isDirty())
         {
-            // 422 = Unprocessable Entity (malformed petition)
-            $msg = 'Must supply at least one different value to update';
-            return $this->errorResponse($msg, 422);
+            return $this->errorUpdateNoChanges();
         }
 
         $section->save();

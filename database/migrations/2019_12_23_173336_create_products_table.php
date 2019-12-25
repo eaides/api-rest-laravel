@@ -29,6 +29,7 @@ class CreateProductsTable extends Migration
                 ->on('users');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

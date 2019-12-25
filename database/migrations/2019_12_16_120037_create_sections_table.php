@@ -17,6 +17,7 @@ class CreateSectionsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name', 255);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

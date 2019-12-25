@@ -167,7 +167,7 @@ class UserController extends RegisterController
 
         if (!$user->isDirty())
         {
-            return $this->errorResponse('At least one value must change in order to edit the user', 422);
+            return $this->errorUpdateNoChanges();
         }
 
         $user->save();
