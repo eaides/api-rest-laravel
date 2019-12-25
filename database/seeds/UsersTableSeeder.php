@@ -42,7 +42,7 @@ class UsersTableSeeder extends Seeder
                 'role' => 'role_bad',
             ]);
 
-            $quantity = 500;
+            $quantity = 1000;
             factory(App\User::class, $quantity)->create();
 
             DB::statement('SET FOREIGN_KEY_CHECKS = 1');

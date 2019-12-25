@@ -37,6 +37,15 @@ class Product extends Model
     ];
 
     /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'pivot',
+    ];
+
+    /**
      * Save the model to the database.
      *
      * @param  array  $options

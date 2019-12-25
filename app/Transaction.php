@@ -33,9 +33,18 @@ class Transaction extends Model
     ];
 
     /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'pivot',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    protected function product()
+    public function product()
     {
         return $this->belongsTo(Product::class);
     }
@@ -43,7 +52,7 @@ class Transaction extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    protected function buyer()
+    public function buyer()
     {
         return $this->belongsTo(Buyer::class);
     }
