@@ -30,11 +30,12 @@ Route::apiResource('users','User\UserController');
  * Section
  */
 Route::apiResource('sections','Section\SectionController');
+Route::apiResource('sections.posts','Section\SectionPostController', ['except'=>['show']]);
 
 /**
  * Post
  */
-Route::apiResource('posts','Post\PostController');
+Route::apiResource('posts','Post\PostController', ['only'=>['index','show']]);
 
 /**
  * Buyers

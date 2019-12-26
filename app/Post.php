@@ -29,7 +29,7 @@ class Post extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'content', 'image',
+        'title', 'content', 'image', 'user_id', 'section_id',
     ];
 
     /**
@@ -38,7 +38,7 @@ class Post extends Model
      * @var array
      */
     protected $hidden = [
-        'user_id', 'category_id',
+        'user_id',
     ];
 
     /**
