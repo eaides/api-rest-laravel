@@ -26,4 +26,12 @@ class Buyer extends User
     {
         return $this->hasMany(Transaction::class);
     }
+
+    /**
+     * Accessors
+     */
+    public function getNameAttribute($value)
+    {
+        return ucwords($value) . ' Buyer';
+    }
 }

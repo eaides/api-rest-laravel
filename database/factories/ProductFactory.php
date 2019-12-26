@@ -14,7 +14,7 @@ $factory->define(Product::class, function (Faker $faker) {
     $images[] = null;
 
     return [
-        'name' => $faker->word,
+        'name' => $faker->word . ' product',
         'description' => $faker->paragraph(1),
         'quantity' => $faker->numberBetween(1, 10),
         'status' => $faker->randomElement([Product::PRODUCT_AVAILABLE, Product::PRODUCT_UNAVAILABLE]),

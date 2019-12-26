@@ -1,23 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Post;
+namespace App\Http\Controllers\Seller;
 
+use App\Seller;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
-use App\Post;
 
-class PostController extends ApiController
+class SellerProductController extends ApiController
 {
-    protected $empty_response_data = [];
-
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param  \App\Seller  $seller
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Seller $seller)
     {
-        //
+        $products = $seller->products;
+
+        return $this->showAll($products);
     }
 
     /**
@@ -32,24 +34,13 @@ class PostController extends ApiController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Seller  $seller
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Seller $seller)
     {
         //
     }
@@ -57,10 +48,10 @@ class PostController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Seller  $seller
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Seller $seller)
     {
         //
     }

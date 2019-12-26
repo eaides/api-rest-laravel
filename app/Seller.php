@@ -25,4 +25,12 @@ class Seller extends User
     {
         return $this->hasMany(Product::class);
     }
+
+    /**
+     * Accessors
+     */
+    public function getNameAttribute($value)
+    {
+        return ucwords($value) . ' Seller';
+    }
 }
