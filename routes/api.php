@@ -53,6 +53,9 @@ Route::apiResource('categories.sellers','Category\CategorySellerController', ['o
 Route::apiResource('categories.transactions','Category\CategoryTransactionController', ['only'=>['index']]);
 
 Route::apiResource('products','Product\ProductController', ['only'=>['index','show']]);
+Route::apiResource('products.buyers','Product\ProductBuyerController', ['only'=>['index']]);
+Route::apiResource('products.categories','Product\ProductCategoryController', ['only'=>['index','update','destroy']]);
+Route::apiResource('products.transactions','Product\ProductTransactionController', ['only'=>['index']]);
 
 
 
