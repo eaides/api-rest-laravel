@@ -7,6 +7,7 @@ use App\Seller;
 use App\User;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SellerProductController extends ApiController
 {
@@ -66,10 +67,14 @@ class SellerProductController extends ApiController
         }
         $data['image'] = null;  // @todo: remove this row when will process the files
 
-        if ($request->missing('status'))
-        {
-            $data['status'] = Product::PRODUCT_UNAVAILABLE;
-        }
+        // at the creation, the status will be not available. In update products
+        // can be chane to available, only if the product has at least one category
+        // the category can not be assigned during the creation.
+        $data['status'] = Product::PRODUCT_UNAVAILABLE;
+//        if ($request->missing('status'))
+//        {
+//            $data['status'] = Product::PRODUCT_UNAVAILABLE;
+//        }
 
         $data['seller_id'] = $seller->id;
 
@@ -83,21 +88,93 @@ class SellerProductController extends ApiController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Seller  $seller
-     * @return \Illuminate\Http\Response
+     *      we will use for updates Seller because the User has, at least
+     *      this product. Can not update that is not ours (owner by the
+     *      passed seller id
+     * @param  \App\Product $product
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, Seller $seller)
+    public function update(Request $request, Seller $seller, Product $product)
     {
-        //
+        $rules = [
+            'name' => ['string', 'max:255'],
+            'description' => ['string', 'max:1000'],
+            'quantity' => ['integer','min:1'],
+            'status' => ['in:'.Product::PRODUCT_AVAILABLE.','.Product::PRODUCT_UNAVAILABLE],
+            'image' => ['image'],
+        ];
+
+        $this->validate($request, $rules);
+
+        $this->sellerVerify($seller, $product);
+
+        $product->fill($request->only([
+            // status and image will be asigned later
+            'name', 'description', 'quantity'
+        ]));
+
+        if ($request->has('status'))
+        {
+            $product->status = $request->status;
+            // after change status, if available and has not categories
+            if ($product->isAvailable() && $product->categories()->count() == 0)
+            {
+                return $this->errorResponse("An active product must have at least one category", 409);
+            }
+        }
+
+        if ($request->has('image'))
+        {
+            // @todo
+        }
+        else
+        {
+            $product->image = null;
+        }
+        $product->image = null;  // @todo: remove this row when will process the files
+
+        if ($product->isClean())
+        {
+            return $this->errorUpdateNoChanges();
+        }
+
+        $product->save();
+
+        return $this->showOne($product);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Seller  $seller
-     * @return \Illuminate\Http\Response
+     *      we will use for updates Seller because the User has, at least
+     *      this product. Can not update that is not ours (owner by the
+     *      passed seller id
+     * @param  \App\Product $product
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Exception
      */
-    public function destroy(Seller $seller)
+    public function destroy(Seller $seller, Product $product)
     {
-        //
+        $this->sellerVerify($seller, $product);
+
+        $product->delete();
+
+        return $this->showOne($product);
+    }
+
+    /**
+     * @param Seller $seller
+     * @param Product $product
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     */
+    protected function sellerVerify(Seller $seller, Product $product)
+    {
+        if ($product->seller_id != $seller->id)
+        {
+            throw new HttpException(422,"The seller specified is not the real product's seller");
+        }
     }
 }

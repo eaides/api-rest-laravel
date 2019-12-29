@@ -70,7 +70,7 @@ class CategoryController extends ApiController
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, Category $category )
+    public function update(Request $request, Category $category)
     {
         $rules = [
             'name' => ['string', 'max:255'],
@@ -111,7 +111,7 @@ class CategoryController extends ApiController
          * The resulting collection will preserve the original
          * collection's keys:
          */
-        $category->fill($request->intersect([
+        $category->fill($request->only([
             'name',
             'description',
         ]));
