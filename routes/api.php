@@ -38,7 +38,7 @@ Route::apiResource('sections.posts','Section\SectionPostController', ['except'=>
 Route::apiResource('posts','Post\PostController', ['only'=>['index','show']]);
 
 /**
- * Buyers
+ * Buyer
  */
 Route::apiResource('buyers','Buyer\BuyerController', ['only'=>['index','show']]);
 Route::apiResource('buyers.categories','Buyer\BuyerCategoryController', ['only'=>['index']]);
@@ -46,14 +46,21 @@ Route::apiResource('buyers.products','Buyer\BuyerProductController', ['only'=>['
 Route::apiResource('buyers.sellers','Buyer\BuyerSellerController', ['only'=>['index']]);
 Route::apiResource('buyers.transactions','Buyer\BuyerTransactionController', ['only'=>['index']]);
 
+/**
+ * Category
+ */
 Route::apiResource('categories','Category\CategoryController', ['except'=>['create','edit']]);
 Route::apiResource('categories.buyers','Category\CategoryBuyerController', ['only'=>['index']]);
 Route::apiResource('categories.products','Category\CategoryProductController', ['only'=>['index']]);
 Route::apiResource('categories.sellers','Category\CategorySellerController', ['only'=>['index']]);
 Route::apiResource('categories.transactions','Category\CategoryTransactionController', ['only'=>['index']]);
 
+/**
+ * Product
+ */
 Route::apiResource('products','Product\ProductController', ['only'=>['index','show']]);
 Route::apiResource('products.buyers','Product\ProductBuyerController', ['only'=>['index']]);
+Route::apiResource('products.buyers.transactions','Product\ProductBuyerTransactionController', ['only'=>['store']]);
 Route::apiResource('products.categories','Product\ProductCategoryController', ['only'=>['index','update','destroy']]);
 Route::apiResource('products.transactions','Product\ProductTransactionController', ['only'=>['index']]);
 
