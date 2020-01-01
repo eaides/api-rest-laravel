@@ -54,7 +54,7 @@ class ProductBuyerTransactionController extends ApiController
             return $this->errorResponse('The product has not available quantities for the require',409);
         }
 
-        $transaction = false;
+        $transaction = null;
         DB::transaction(function() use ($request, $product, $buyer, &$transaction)
         {
             $product->quantity -= $request->quantity;
@@ -71,6 +71,7 @@ class ProductBuyerTransactionController extends ApiController
         {
             return $this->showOne($transaction, 201);
         }
+
         return $this->errorResponse('fail to create transaction', 500);
     }
 
