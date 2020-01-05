@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Helpers\Helper;
 use App\Traits\ApiResponser;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -61,7 +62,11 @@ class RegisterController extends Controller
             'role' => ['string', 'max:20'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'image' => ['string', 'max:255'],
+            'image' => [
+                'image',
+                Rule::dimensions()->maxWidth(2000)->maxHeight(2000),
+                'max:10240',
+            ],
             'verification_token' => ['string', 'max:200'],
         ]);
     }
@@ -72,15 +77,25 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function create(array $data, $request=null)
     {
-        if (!isset($data['verification_token']))
+        if (!array_key_exists('verification_token', $data))
         {
             $data['verification_token'] = null;
         }
-        /** bio and image are not part of the create user
-         *  there can be filled as part of the update process
-         */
+
+        $data['image'] = null;
+        if (($request instanceof Request)
+            && $request->hasFile('image'))
+        {
+            $data['image'] = Helper::storeAndReSizeImg($request, 'image');
+        }
+
+        if (!array_key_exists('bio', $data))
+        {
+            $data['bio'] = '';
+        }
+
         return User::create([
             'name' => $data['name'],
             'surname' => $data['surname'],
@@ -88,6 +103,8 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'verification_token' => $data['verification_token'],
+            'image' => $data['image'],
+            'bio' => $data['bio'],
         ]);
     }
 
@@ -113,7 +130,7 @@ class RegisterController extends Controller
                 $data['verification_token']   = null;
                 $data['email_verified_at']  = now();
             }
-            $user = $this->create($data);
+            $user = $this->create($data, $request);
 
             return $user;
         }

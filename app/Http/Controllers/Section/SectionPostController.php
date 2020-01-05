@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Section;
 
+use App\Helpers\Helper;
 use App\Http\Controllers\ApiController;
 use App\Post;
 use App\Section;
 use App\User;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SectionPostController extends ApiController
@@ -58,7 +61,11 @@ class SectionPostController extends ApiController
         $rules = [
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required'],
-            'image' => ['image'],
+            'image' => [
+                'image',
+                Rule::dimensions()->maxWidth(2000)->maxHeight(2000),
+                'max:10240',
+            ],
         ];
 
         $this->validate($request, $rules);
@@ -69,15 +76,11 @@ class SectionPostController extends ApiController
          * Can fix data if needed, like:
          */
 
+        $data['image'] = null;
         if ($request->has('image'))
         {
-            // @todo
+            $data['image'] = Helper::storeAndReSizeImg($request, 'image');
         }
-        else
-        {
-            $data['image'] = null;
-        }
-        $data['image'] = null;  // @todo: remove this row when will process the files
 
         $data['section_id'] = $section->id;
         $data['user_id'] = $user->id;
@@ -116,7 +119,11 @@ class SectionPostController extends ApiController
 
         $rules = [
             'title' => ['string', 'max:255'],
-            'image' => ['image'],
+            'image' => [
+                'image',
+                Rule::dimensions()->maxWidth(2000)->maxHeight(2000),
+                'max:10240',
+            ],
         ];
 
         $this->validate($request, $rules);
@@ -128,15 +135,12 @@ class SectionPostController extends ApiController
             'title', 'content',
         ]));
 
-        if ($request->has('image'))
+        if ($request->hasFile('image'))
         {
-            // @todo
+            Storage::delete($post->image);
+
+            $post->image = Helper::storeAndReSizeImg($request, 'image');
         }
-        else
-        {
-            $post->image = null;
-        }
-        $post->image = null;  // @todo: remove this row when will process the files
 
         if ($post->isClean())
         {
@@ -156,7 +160,7 @@ class SectionPostController extends ApiController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      * @throws \Illuminate\Auth\AuthenticationException
-     * @throws \Illuminate\Validation\UnauthorizedException
+     * @throws \Exception
      */
     public function destroy(Section $section, Post $post)
     {
@@ -176,6 +180,12 @@ class SectionPostController extends ApiController
 
         $this->sectionVerify($section, $post);
 
+        // @todo must remove only for permanently remove
+        Storage::delete($post->image);
+
+        $post->delete();
+
+        return $this->showOne($post);
     }
 
     /**

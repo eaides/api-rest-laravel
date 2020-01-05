@@ -5,8 +5,10 @@ namespace App\Http\Controllers\User;
 use App\Helpers\Helper;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Auth\RegisterController;
+use Illuminate\Support\Facades\Storage;
 use App\User;
 
 /**
@@ -42,13 +44,13 @@ class UserController extends RegisterController
      * @param  array|null $data
      * @return \App\User|\Illuminate\Http\JsonResponse
      */
-    public function create($data=null)
+    public function create($data=null, $request = null)
     {
         if (!$data || !is_array($data))
         {
             return $this->errorResponse('No data received', 405);
         }
-        return parent::create($data);
+        return parent::create($data, $request);
     }
 
     /**
@@ -110,8 +112,15 @@ class UserController extends RegisterController
             'name' => ['string', 'max:50'],
             'surname' => ['string', 'max:100'],
             'role' => ['in:'.User::ROLE_PUBLISHER.','.User::ROLE_READER.','.USER::ROLE_ADMIN,],
-            'email' => ['string', 'email', 'max:255', 'unique:users,email,'.$user->id],
-            'image' => ['string', 'max:255'],
+            'email' => [
+                'string', 'email', 'max:255',
+                Rule::unique('users,email')->ignore($user->id),
+            ],
+            'image' => [
+                'image',
+                Rule::dimensions()->maxWidth(2000)->maxHeight(2000),
+                'max:10240',
+            ],
         ];
 
         $this->validate($request, $rules);
@@ -160,9 +169,11 @@ class UserController extends RegisterController
             $user->bio = $request->bio;
         }
 
-        if ($request->has('image'))
+        if ($request->hasFile('image'))
         {
-            $user->image = $request->image;
+            Storage::delete($user->image);
+
+            $user->image = Helper::storeAndReSizeImg($request, 'image');
         }
 
         if (!$user->isDirty())
@@ -197,6 +208,9 @@ class UserController extends RegisterController
         *       409 - Conflict
         * return $this->errorResponse('The authenticated user can not be deleted (don't try suicide)', 409);
         */
+
+        // @todo must remove only for permanently remove
+        Storage::delete($user->image);
 
         $user->delete();
 

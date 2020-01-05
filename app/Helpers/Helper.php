@@ -2,13 +2,16 @@
 
 namespace App\Helpers;
 
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
 use Illuminate\Validation\Validator;
+use Intervention\Image\Facades\Image;
 
 class Helper
 {
@@ -85,4 +88,29 @@ class Helper
         }
         return $files;
     }
+
+    /**
+     * @param Request $request
+     * @param string $image_key
+     * @param int $maxW
+     * @param int $maxH
+     * @return mixed
+     */
+    public static function storeAndReSizeImg(Request $request, $image_key='image', int $maxW=640, int $maxH=480)
+    {
+
+        // original file image
+        $image_name = $request->$image_key->store('');
+
+        // resize
+        $ori_image = Storage::disk('images')->path($image_name);
+        $imageR = Image::make($ori_image)->resize($maxW, $maxH, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+        $imageR->save($ori_image);
+
+        return $image_name;
+    }
+
 }

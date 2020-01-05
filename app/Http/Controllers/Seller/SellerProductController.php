@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Seller;
 use App\Product;
 use App\Seller;
 use App\User;
+use App\Helpers\Helper;
 use App\Http\Controllers\ApiController;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SellerProductController extends ApiController
@@ -44,7 +47,11 @@ class SellerProductController extends ApiController
             'description' => ['required', 'string', 'max:1000'],
             'quantity' => ['required','integer','min:1'],
             'status' => ['in:'.Product::PRODUCT_AVAILABLE.','.Product::PRODUCT_UNAVAILABLE],
-            'image' => ['image'],
+            'image' => [
+                'image',
+                Rule::dimensions()->maxWidth(2000)->maxHeight(2000),
+                'max:10240',
+            ],
         ];
 
         $this->validate($request, $rules);
@@ -57,15 +64,11 @@ class SellerProductController extends ApiController
          * $data['status'] = Product::PRODUCT_UNAVAILABLE
          *
          */
+        $data['image'] = null;
         if ($request->has('image'))
         {
-            // @todo
+            $data['image'] = Helper::storeAndReSizeImg($request, 'image');
         }
-        else
-        {
-            $data['image'] = null;
-        }
-        $data['image'] = null;  // @todo: remove this row when will process the files
 
         // at the creation, the status will be not available. In update products
         // can be chane to available, only if the product has at least one category
@@ -102,7 +105,11 @@ class SellerProductController extends ApiController
             'description' => ['string', 'max:1000'],
             'quantity' => ['integer','min:1'],
             'status' => ['in:'.Product::PRODUCT_AVAILABLE.','.Product::PRODUCT_UNAVAILABLE],
-            'image' => ['image'],
+            'image' => [
+                'image',
+                Rule::dimensions()->maxWidth(2000)->maxHeight(2000),
+                'max:10240',
+            ],
         ];
 
         $this->validate($request, $rules);
@@ -124,15 +131,12 @@ class SellerProductController extends ApiController
             }
         }
 
-        if ($request->has('image'))
+        if ($request->hasFile('image'))
         {
-            // @todo
+            Storage::delete($product->image);
+
+            $product->image = Helper::storeAndReSizeImg($request, 'image');
         }
-        else
-        {
-            $product->image = null;
-        }
-        $product->image = null;  // @todo: remove this row when will process the files
 
         if ($product->isClean())
         {
@@ -159,6 +163,9 @@ class SellerProductController extends ApiController
     public function destroy(Seller $seller, Product $product)
     {
         $this->sellerVerify($seller, $product);
+
+        // @todo must remove only for permanently remove
+        Storage::delete($product->image);
 
         $product->delete();
 
