@@ -17,12 +17,18 @@ class User extends Authenticatable implements MustVerifyEmail
     const ROLE_PUBLISHER = 'role_publisher';
     const ROLE_READER = 'role_reader';
 
+    const MINUTES_TO_RESEND = 15;
+
+
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'deleted_at',
+        'next_resend_at',
+    ];
 
     /**
      * The table associated with the model.
@@ -46,7 +52,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password', 'role', 'email', 'pivot',
+        'password', 'role', 'email', 'pivot', 'next_resend_at',
         'remember_token', 'verification_token', 'email_verified_at'
     ];
 
@@ -57,7 +63,15 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'next_resend_at' => 'datetime',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['is_verified'];
 
     /**
      * Get the posts for the user
@@ -154,6 +168,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getSurnameAttribute($value)
     {
         return ucwords($value);
+    }
+
+    public function getIsVerifiedAttribute()
+    {
+        return $this->isVerified();
     }
 
 }

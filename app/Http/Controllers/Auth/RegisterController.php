@@ -85,10 +85,13 @@ class RegisterController extends Controller
         }
 
         $data['image'] = null;
-        if (($request instanceof Request)
-            && $request->hasFile('image'))
+        if (!Helper::needApiValidation())
         {
-            $data['image'] = Helper::storeAndReSizeImg($request, 'image');
+            if (($request instanceof Request)
+                && $request->hasFile('image'))
+            {
+                $data['image'] = Helper::storeAndReSizeImg($request, 'image');
+            }
         }
 
         if (!array_key_exists('bio', $data))

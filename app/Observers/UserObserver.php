@@ -2,29 +2,15 @@
 
 namespace App\Observers;
 
+use App\Helpers\Helper;
 use App\User;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UserCreated;
 use App\Mail\UserMailChanged;
 
 class UserObserver
 {
-    protected $disable_web_routes;
-    protected $use_email_verification;
-    protected $is_api = false;
-
-    public function __construct()
-    {
-        $this->disable_web_routes = config('app.disable_web_routes');
-        $this->use_email_verification = config('app.use_email_verification');
-        $route_prefix = Route::current()->getPrefix();
-        if ($route_prefix == config('app.api_prefix'))
-        {
-            $this->is_api = true;
-        }
-    }
-
     /**
      * Handle the user "created" event.
      *
@@ -33,10 +19,8 @@ class UserObserver
      */
     public function created(User $user)
     {
-        if ($this->disable_web_routes || $this->is_api) {
-            if ($this->use_email_verification) {
-                Mail::to($user)->send(new UserCreated($user));
-            }
+        if (Helper::needApiValidation()) {
+            Mail::to($user)->send(new UserCreated($user));
         }
     }
 
@@ -48,12 +32,13 @@ class UserObserver
      */
     public function updated(User $user)
     {
-        if ($this->disable_web_routes || $this->is_api) {
-            if ($this->use_email_verification) {
-                /** Illuminate\Database\Eloquent\Model $user */
-                if ($user->isDirty('email')) {
-                    Mail::to($user)->send(new UserMailChanged($user));
-                }
+        if (Helper::needApiValidation()) {
+            /** Illuminate\Database\Eloquent\Model $user */
+            if ($user->isDirty('email')) {
+                Mail::to($user)->send(new UserMailChanged($user));
+                $minutes = intval(User::MINUTES_TO_RESEND);
+                $user->next_resend_at = Carbon::now()->addMinutes($minutes);
+                $user->save();
             }
         }
     }

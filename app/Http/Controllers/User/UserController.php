@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Helpers\Helper;
+use App\Mail\UserCreated;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Auth\RegisterController;
@@ -160,6 +163,7 @@ class UserController extends RegisterController
             {
                 $user->verification_token = User::generateVerificationToken();
                 $user->email_verified_at = null;
+//                $user->next_resend_at = Carbon::now()->addMinutes(User::MINUTES_TO_RESEND);
             }
             $user->email = $request->email;
         }
@@ -169,7 +173,7 @@ class UserController extends RegisterController
             $user->bio = $request->bio;
         }
 
-        if ($request->hasFile('image'))
+        if (!is_null($user->email_verified_at) && $request->hasFile('image'))
         {
             Storage::delete($user->image);
 
@@ -217,15 +221,47 @@ class UserController extends RegisterController
         return $this->showOne($user);
     }
 
+    /**
+     * @param $token
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function verify($token)
     {
         $user = User::where('verification_token', $token)->firstOrFail();
 
         $user->verification_token = null;
         $user->email_verified_at = now();
+        $user->next_resend_at = null;
 
         $user->save();
 
         return $this->showMessage('account verified succesfully');
+    }
+
+    /**
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function resend(User $user)
+    {
+        if ($user->isVerified())
+        {
+            return $this->errorResponse('This user is already verified', 409);
+        }
+        if (! is_null($user->next_resend_at))
+        {
+            if (Carbon::now() < $user->next_resend_at)
+            {
+                return $this->errorResponse('Mail already send, check your spam or wait some minutes until new request', 409);
+            }
+
+        }
+        Mail::to($user)->send(new UserCreated($user));
+
+        $minutes = intval(User::MINUTES_TO_RESEND);
+        $user->next_resend_at = Carbon::now()->addMinutes($minutes);
+        $user->save();
+
+        return $this->showMessage('validation email was resend');
     }
 }

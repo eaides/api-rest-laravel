@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Helpers\Helper;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,12 +20,13 @@ use Illuminate\Support\Facades\Route;
  * Route for /api/users ***
  *      except function create() that render form for create and 'edit' that render form for edit
  */
+if (Helper::needApiValidation()) {
+    Route::name('api.resend')->get('users/{user}/resend', 'User\UserController@resend');
+}
 Route::name('api.verify')->get('users/verify/{token}', 'User\UserController@verify');
 // use apiResource automatically that excludes 'create','edit'
+// Route::resource('users','User\UserController', ['except'=>['create','edit']]);
 Route::apiResource('users','User\UserController');
-//Route::resource('users','User\UserController', ['except'=>['create','edit']]);
-//Route::resource('categories','Section\SectionController', ['except'=>['create','edit']]);
-//Route::resource('posts','Post\PostController', ['except'=>['create','edit']]);
 
 /**
  * Section
@@ -35,6 +37,8 @@ Route::apiResource('sections.posts','Section\SectionPostController', ['except'=>
 /**
  * Post
  */
+// use apiResource automatically that excludes 'create','edit'
+// Route::resource('posts','Post\PostController', ['except'=>['create','edit']]);
 Route::apiResource('posts','Post\PostController', ['only'=>['index','show']]);
 
 /**
@@ -49,6 +53,8 @@ Route::apiResource('buyers.transactions','Buyer\BuyerTransactionController', ['o
 /**
  * Category
  */
+// use apiResource automatically that excludes 'create','edit'
+// Route::resource('categories','Section\SectionController', ['except'=>['create','edit']]);
 Route::apiResource('categories','Category\CategoryController', ['except'=>['create','edit']]);
 Route::apiResource('categories.buyers','Category\CategoryBuyerController', ['only'=>['index']]);
 Route::apiResource('categories.products','Category\CategoryProductController', ['only'=>['index']]);
