@@ -32,6 +32,6 @@ class UserCreated extends Mailable
     public function build()
     {
         // all public attributes of the class are available for the views
-        return $this->view('emails.welcome')->subject('Please confirm you email at api-rest-laravel');
+        return $this->markdown('emails.welcome')->subject('Please confirm you email at api-rest-laravel');
     }
 }

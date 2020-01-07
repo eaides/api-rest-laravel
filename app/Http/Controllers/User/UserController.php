@@ -117,7 +117,7 @@ class UserController extends RegisterController
             'role' => ['in:'.User::ROLE_PUBLISHER.','.User::ROLE_READER.','.USER::ROLE_ADMIN,],
             'email' => [
                 'string', 'email', 'max:255',
-                Rule::unique('users,email')->ignore($user->id),
+                Rule::unique('users')->ignore($user->id),
             ],
             'image' => [
                 'image',
@@ -163,7 +163,10 @@ class UserController extends RegisterController
             {
                 $user->verification_token = User::generateVerificationToken();
                 $user->email_verified_at = null;
-//                $user->next_resend_at = Carbon::now()->addMinutes(User::MINUTES_TO_RESEND);
+                $minutes = intval(User::MINUTES_TO_RESEND);
+                $user->next_resend_at = Carbon::now()->addMinutes($minutes);
+            } else {
+                $user->next_resend_at = null;
             }
             $user->email = $request->email;
         }
@@ -173,7 +176,7 @@ class UserController extends RegisterController
             $user->bio = $request->bio;
         }
 
-        if (!is_null($user->email_verified_at) && $request->hasFile('image'))
+        if ($user->isVerified() && $request->hasFile('image'))
         {
             Storage::delete($user->image);
 
@@ -241,6 +244,7 @@ class UserController extends RegisterController
     /**
      * @param User $user
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function resend(User $user)
     {
@@ -256,11 +260,14 @@ class UserController extends RegisterController
             }
 
         }
-        Mail::to($user)->send(new UserCreated($user));
 
         $minutes = intval(User::MINUTES_TO_RESEND);
         $user->next_resend_at = Carbon::now()->addMinutes($minutes);
         $user->save();
+
+        retry(5, function() use ($user) {
+            Mail::to($user)->send(new UserCreated($user));
+        }, 100);
 
         return $this->showMessage('validation email was resend');
     }

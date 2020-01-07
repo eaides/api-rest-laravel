@@ -60,9 +60,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        $disable_own_handler = false;
         $disable_web_routes = config('app.disable_web_routes');
         $pattern =  config('app.api_prefix') . '/*';
-        if ($disable_web_routes || $request->is($pattern)) {
+        if (
+            !$disable_own_handler &&
+            ($disable_web_routes || $request->is($pattern))
+        ) {
             if ($exception instanceof ValidationException)
             {
                 $errors = $exception->validator->errors()->getMessages();

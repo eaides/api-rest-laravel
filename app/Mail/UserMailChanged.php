@@ -32,6 +32,6 @@ class UserMailChanged extends Mailable
     public function build()
     {
         // all public attributes of the class are available for the views
-        return $this->view('emails.confirm')->subject('Please confirm you email at api-rest-laravel');
+        return $this->markdown('emails.confirm')->subject('Please confirm you email at api-rest-laravel');
     }
 }

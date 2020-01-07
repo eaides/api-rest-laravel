@@ -1,7 +1,12 @@
-<p>Hello {{ $user->name }} {{$user->surname }}</p>
+@component('mail::message')
+# Hello {{ $user->name }} {{$user->surname }}
 
-<p>Thank for register, please validate your email by following the next link:</p>
+Thank for register, please validate your email by following the next button:
 
-<a href="{{ route('api.verify', $user->verification_token) }}">{{ route('api.verify', $user->verification_token) }}</a>
+@component('mail::button', ['url' => route('api.verify', $user->verification_token)])
+Confirm my account
+@endcomponent
 
-<p>Admin -- api-rest-laravel.com.dev</p>
+Thanks,<br>
+Admin -- {{ config('app.name') }}
+@endcomponent

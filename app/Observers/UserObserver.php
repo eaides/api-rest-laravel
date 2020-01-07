@@ -16,11 +16,14 @@ class UserObserver
      *
      * @param  \App\User  $user
      * @return void
+     * @throws \Exception
      */
     public function created(User $user)
     {
         if (Helper::needApiValidation()) {
-            Mail::to($user)->send(new UserCreated($user));
+            retry(5, function() use ($user) {
+                Mail::to($user)->send(new UserCreated($user));
+            }, 100);  // miliseconds
         }
     }
 
@@ -29,16 +32,16 @@ class UserObserver
      *
      * @param  \App\User  $user
      * @return void
+     * @throws \Exception
      */
     public function updated(User $user)
     {
         if (Helper::needApiValidation()) {
             /** Illuminate\Database\Eloquent\Model $user */
             if ($user->isDirty('email')) {
-                Mail::to($user)->send(new UserMailChanged($user));
-                $minutes = intval(User::MINUTES_TO_RESEND);
-                $user->next_resend_at = Carbon::now()->addMinutes($minutes);
-                $user->save();
+                retry(5, function() use ($user) {
+                    Mail::to($user)->send(new UserMailChanged($user));
+                },100);
             }
         }
     }
