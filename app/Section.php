@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Transformers\SectionTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -31,6 +32,8 @@ class Section extends Model
     protected $fillable = [
         'name',
     ];
+
+    public $transformer = SectionTransformer::class;
 
     /**
      * Get the posts for the user

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Transformers\PostTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -40,6 +41,8 @@ class Post extends Model
     protected $hidden = [
         'user_id',
     ];
+
+    public $transformer = PostTransformer::class;
 
     /**
      * Get the user for the post.

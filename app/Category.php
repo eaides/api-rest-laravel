@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Transformers\CategoryTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -40,6 +41,8 @@ class Category extends Model
     protected $fillable = [
         'name', 'description',
     ];
+
+    public $transformer = CategoryTransformer::class;
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

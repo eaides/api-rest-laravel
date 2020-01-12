@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Transformers\UserTransformer;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -72,6 +73,8 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $appends = ['is_verified'];
+
+    public $transformer = UserTransformer::class;
 
     /**
      * Get the posts for the user

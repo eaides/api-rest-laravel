@@ -41,15 +41,36 @@ trait ApiResponser
     }
 
     /**
+     * @param $data
+     * @param $transformer
+     */
+    protected function transformData($data, $transformer)
+    {
+        $transformation = fractal($data, new $transformer);
+        return $transformation->toArray();
+    }
+
+    /**
      * @param Collection $collection
      * @param int $code
      * @return \Illuminate\Http\JsonResponse
      */
     protected function showAll(Collection $collection, $code = 200)
     {
-       return $this->successResponse([
-           'data' => $collection
-       ], $code);
+        if ($collection->isEmpty())
+        {
+            return $this->successResponse([
+                'data' => $collection
+            ], $code);
+        }
+        $transformer = $collection->first()->transformer;
+        $collection = $this->transformData($collection, $transformer);
+// we don't use 'data' anymore because fractal already return
+// the transformation inside 'data' element
+//        return $this->successResponse([
+//            'data' => $collection
+//        ], $code);
+        return $this->successResponse($collection, $code);
     }
 
     /**
@@ -60,9 +81,20 @@ trait ApiResponser
      */
     protected function showOne(Model $instance, $code = 200)
     {
-        return $this->successResponse([
-            'data' => $instance
-        ], $code);
+        if (is_null($instance))
+        {
+            return $this->successResponse([
+                'data' => $instance
+            ], $code);
+        }
+// we don't use 'data' anymore because fractal already return
+// the transformation inside 'data' element
+//        return $this->successResponse([
+//            'data' => $instance
+//        ], $code);
+        $transformer = $instance->transformer;
+        $instance = $this->transformData($instance, $transformer);
+        return $this->successResponse($instance, $code);
     }
 
     /**
