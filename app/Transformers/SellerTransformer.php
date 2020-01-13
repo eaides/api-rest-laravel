@@ -37,7 +37,7 @@ class SellerTransformer extends TransformerAbstract
 
             'first_name'        => (string)$seller->name,
             'last_name'         => (string)$seller->surname,
-            'e-mail'            => (string)$seller->surname,
+            'e-mail'            => (string)$seller->email,
             'biography'         => (string)$seller->bio,
             'image'             => isset($seller->image) ? (string)$seller->image : null,
 
@@ -45,5 +45,24 @@ class SellerTransformer extends TransformerAbstract
             'updatedDate'       => (string)$seller->updated_at,
             'deletedDate'       => isset($seller->deleted_at) ? (string)$seller->deleted_at : null,
         ];
+    }
+
+    public static function originalAttribute($index)
+    {
+        $attributes = [
+            'identifier'        => 'id',
+
+            'first_name'        => 'name',
+            'last_name'         => 'surname',
+            'e-mail'            => 'email',
+            'biography'         => 'bio',
+            'image'             => 'image',
+
+            'creationDate'      => 'created_at',
+            'updatedDate'       => 'updated_at',
+            'deletedDate'       => 'deleted_at',
+        ];
+        return array_key_exists($index, $attributes) ?
+            $attributes[$index] : null;
     }
 }

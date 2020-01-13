@@ -37,7 +37,7 @@ class UserTransformer extends TransformerAbstract
 
             'first_name'        => (string)$user->name,
             'last_name'         => (string)$user->surname,
-            'e-mail'            => (string)$user->surname,
+            'e-mail'            => (string)$user->email,
             'biography'         => (string)$user->bio,
             'image'             => isset($user->image) ?
                 (string)url("img/{$user->image}") :
@@ -50,5 +50,24 @@ class UserTransformer extends TransformerAbstract
             'updatedDate'       => (string)$user->updated_at,
             'deletedDate'       => isset($user->deleted_at) ? (string)$user->deleted_at : null,
         ];
+    }
+
+    public static function originalAttribute($index)
+    {
+        $attributes = [
+            'identifier'        => 'id',
+
+            'first_name'        => 'name',
+            'last_name'         => 'surname',
+            'e-mail'            => 'email',
+            'biography'         => 'bio',
+            'image'             => 'image',
+
+            'creationDate'      => 'created_at',
+            'updatedDate'       => 'updated_at',
+            'deletedDate'       => 'deleted_at',
+        ];
+        return array_key_exists($index, $attributes) ?
+            $attributes[$index] : null;
     }
 }

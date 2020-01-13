@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use App\Transformers\ProductTransformer;
+use App\Transformers\UserTransformer;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -64,6 +66,11 @@ trait ApiResponser
             ], $code);
         }
         $transformer = $collection->first()->transformer;
+
+        $collection = $this->filterData($collection, $transformer);
+        $collection = $this->sortData($collection, $transformer);
+
+        // transform after sort because transform does not retorn a laravel collection
         $collection = $this->transformData($collection, $transformer);
 // we don't use 'data' anymore because fractal already return
 // the transformation inside 'data' element
@@ -71,6 +78,50 @@ trait ApiResponser
 //            'data' => $collection
 //        ], $code);
         return $this->successResponse($collection, $code);
+    }
+
+    /**
+     * @param Collection $collection
+     * @param UserTransformer|ProductTransformer $transformer
+     *          ... u other transformers class
+     * @return Collection|mixed
+     */
+    protected function sortData(Collection $collection, $transformer)
+    {
+        if (request()->has('sort_by') && $collection->isNotEmpty())
+        {
+            $sortBy = $transformer::originalAttribute(request()->sort_by);
+            if ($sortBy)
+            {
+                // $collection = $collection->sortBy($sortBy);
+                // or new from Laravel 5.4
+                $collection = $collection->sortBy->{$sortBy};
+            }
+        }
+        return $collection;
+    }
+
+    /**
+     * @param Collection $collection
+     * @param UserTransformer|ProductTransformer $transformer
+     *          ... u other transformers class
+     * @return Collection|mixed
+     */
+    protected function filterData(Collection $collection, $transformer)
+    {
+        if ($collection->isNotEmpty())
+        {
+            foreach(request()->query() as $query => $value)
+            {
+                $filterBy = $transformer::originalAttribute($query);
+                if ($filterBy && $value)
+                {
+                    // filter by equal
+                    $collection = $collection->where($filterBy, $value);
+                }
+            }
+        }
+        return $collection;
     }
 
     /**

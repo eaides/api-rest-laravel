@@ -50,4 +50,23 @@ class PostTransformer extends TransformerAbstract
             'deletedDate'       => isset($post->deleted_at) ? (string)$post->deleted_at : null,
         ];
     }
+
+    public static function originalAttribute($index)
+    {
+        $attributes = [
+            'identifier'        => 'id',
+
+            'title'             => 'title',
+            'body'              => 'content',
+            'image'             => 'image',
+            'user'              => 'user_id',
+            'section'           => 'section_id',
+
+            'creationDate'      => 'created_at',
+            'updatedDate'       => 'updated_at',
+            'deletedDate'       => 'deleted_at',
+        ];
+        return array_key_exists($index, $attributes) ?
+            $attributes[$index] : null;
+    }
 }
