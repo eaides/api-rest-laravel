@@ -4,8 +4,10 @@ namespace App\Traits;
 
 use App\Transformers\ProductTransformer;
 use App\Transformers\UserTransformer;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
 
 trait ApiResponser
 {
@@ -69,6 +71,7 @@ trait ApiResponser
 
         $collection = $this->filterData($collection, $transformer);
         $collection = $this->sortData($collection, $transformer);
+        $collection = $this->paginateData($collection);
 
         // transform after sort because transform does not retorn a laravel collection
         $collection = $this->transformData($collection, $transformer);
@@ -88,9 +91,18 @@ trait ApiResponser
      */
     protected function sortData(Collection $collection, $transformer)
     {
+        $sortOrder = false;
         if (request()->has('sort_by') && $collection->isNotEmpty())
         {
-            $sortBy = $transformer::originalAttribute(request()->sort_by);
+            $sortOrder = request()->sort_by;
+        }
+        if (request()->has('order_by') && $collection->isNotEmpty())
+        {
+            $sortOrder = request()->order_by;
+        }
+        if ($sortOrder)
+        {
+            $sortBy = $transformer::originalAttribute($sortOrder);
             if ($sortBy)
             {
                 // $collection = $collection->sortBy($sortBy);
@@ -99,6 +111,42 @@ trait ApiResponser
             }
         }
         return $collection;
+    }
+
+    /**
+     * @param Collection $collection
+     * @return LengthAwarePaginator
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function paginateData(Collection $collection)
+    {
+        $rules = [
+            'per_page' => 'integer|min:2|max:50',
+        ];
+        Validator::validate(request()->all(), $rules);
+
+        $page = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 15;
+        if (request()->has('per_page'))
+        {
+            $perPage = intval(request()->per_page);
+        }
+
+        $results = $collection
+            ->slice(($page-1)*$perPage, $perPage)
+            ->values();
+
+        $paginated = new LengthAwarePaginator(
+            $results,
+            $collection->count(),
+            $perPage,
+            $page, [
+                'path' => LengthAwarePaginator::resolveCurrentPath(),
+            ]
+        );
+        $paginated->appends(request()->all());
+
+        return $paginated;
     }
 
     /**
