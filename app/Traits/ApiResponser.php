@@ -7,6 +7,7 @@ use App\Transformers\UserTransformer;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 trait ApiResponser
@@ -54,6 +55,22 @@ trait ApiResponser
         return $transformation->toArray();
     }
 
+    protected function cacheResponse($data)
+    {
+        $url = request()->url();
+        $queryParams = request()->query();
+
+        ksort($queryParams);
+        $queryString = http_build_query($queryParams);
+
+        $fullUrl = "{$url}?{$queryString}";
+
+        // $ttl second parameter is in seconds
+        return Cache::remember($fullUrl, 30, function() use($data) {
+            return $data;
+        });
+    }
+
     /**
      * @param Collection $collection
      * @param int $code
@@ -75,6 +92,7 @@ trait ApiResponser
 
         // transform after sort because transform does not retorn a laravel collection
         $collection = $this->transformData($collection, $transformer);
+        $collection = $this->cacheResponse($collection);
 // we don't use 'data' anymore because fractal already return
 // the transformation inside 'data' element
 //        return $this->successResponse([
