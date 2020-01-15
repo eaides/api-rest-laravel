@@ -3,9 +3,8 @@
 namespace App\Transformers;
 
 use App\Section;
-use League\Fractal\TransformerAbstract;
 
-class SectionTransformer extends TransformerAbstract
+class SectionTransformer extends BaseTransformer
 {
     /**
      * List of resources to automatically include
@@ -41,10 +40,20 @@ class SectionTransformer extends TransformerAbstract
             'updatedDate'       => (string)$section->updated_at,
             'deletedDate'       => isset($section->deleted_at) ? (string)$section->deleted_at : null,
 
+            'links' => [
+                [
+                    'rel' => 'self',
+                    'href' => route('sections.show', $section->id),
+                ],
+                [
+                    'rel' => 'section.posts',
+                    'href' => route('sections.posts.index', $section->id),
+                ],
+            ],
         ];
     }
 
-    public static function originalAttribute($index)
+    protected static function getOriginalAttributes($reverse=false)
     {
         $attributes = [
             'identifier'        => 'id',
@@ -55,7 +64,12 @@ class SectionTransformer extends TransformerAbstract
             'updatedDate'       => 'updated_at',
             'deletedDate'       => 'deleted_at',
         ];
-        return array_key_exists($index, $attributes) ?
-            $attributes[$index] : null;
+
+        if ($reverse)
+        {
+            $attributes = array_flip($attributes);
+        }
+
+        return $attributes;
     }
 }

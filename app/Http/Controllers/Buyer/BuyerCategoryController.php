@@ -29,7 +29,7 @@ class BuyerCategoryController extends ApiController
             ->with('product.categories')
             ->get()
             ->pluck('product.categories')
-//            ->collapse()
+            ->collapse()
             ->unique('id')
             ->values();
 

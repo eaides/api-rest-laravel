@@ -3,9 +3,8 @@
 namespace App\Transformers;
 
 use App\Buyer;
-use League\Fractal\TransformerAbstract;
 
-class BuyerTransformer extends TransformerAbstract
+class BuyerTransformer extends BaseTransformer
 {
     /**
      * List of resources to automatically include
@@ -44,10 +43,37 @@ class BuyerTransformer extends TransformerAbstract
             'creationDate'      => (string)$buyer->created_at,
             'updatedDate'       => (string)$buyer->updated_at,
             'deletedDate'       => isset($buyer->deleted_at) ? (string)$buyer->deleted_at : null,
+
+            'links' => [
+                [
+                    'rel' => 'self',
+                    'href' => route('buyers.show', $buyer->id),
+                ],
+                [
+                    'rel' => 'buyer.categories',
+                    'href' => route('buyers.categories.index', $buyer->id),
+                ],
+                [
+                    'rel' => 'buyer.products',
+                    'href' => route('buyers.products.index', $buyer->id),
+                ],
+                [
+                    'rel' => 'buyer.sellers',
+                    'href' => route('buyers.sellers.index', $buyer->id),
+                ],
+                [
+                    'rel' => 'buyer.transactions',
+                    'href' => route('buyers.transactions.index', $buyer->id),
+                ],
+                [
+                    'rel' => 'user',
+                    'href' => route('users.show', $buyer->id),
+                ],
+            ],
         ];
     }
 
-    public static function originalAttribute($index)
+    protected static function getOriginalAttributes($reverse=false)
     {
         $attributes = [
             'identifier'        => 'id',
@@ -62,7 +88,12 @@ class BuyerTransformer extends TransformerAbstract
             'updatedDate'       => 'updated_at',
             'deletedDate'       => 'deleted_at',
         ];
-        return array_key_exists($index, $attributes) ?
-            $attributes[$index] : null;
+
+        if ($reverse)
+        {
+            $attributes = array_flip($attributes);
+        }
+
+        return $attributes;
     }
 }

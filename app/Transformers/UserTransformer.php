@@ -3,9 +3,8 @@
 namespace App\Transformers;
 
 use App\User;
-use League\Fractal\TransformerAbstract;
 
-class UserTransformer extends TransformerAbstract
+class UserTransformer extends BaseTransformer
 {
     /**
      * List of resources to automatically include
@@ -49,10 +48,17 @@ class UserTransformer extends TransformerAbstract
             'creationDate'      => (string)$user->created_at,
             'updatedDate'       => (string)$user->updated_at,
             'deletedDate'       => isset($user->deleted_at) ? (string)$user->deleted_at : null,
+
+            'links' => [
+                [
+                    'rel' => 'self',
+                    'href' => route('users.show', $user->id),
+                ],
+            ],
         ];
     }
 
-    public static function originalAttribute($index)
+    protected static function getOriginalAttributes($reverse=false)
     {
         $attributes = [
             'identifier'        => 'id',
@@ -67,7 +73,12 @@ class UserTransformer extends TransformerAbstract
             'updatedDate'       => 'updated_at',
             'deletedDate'       => 'deleted_at',
         ];
-        return array_key_exists($index, $attributes) ?
-            $attributes[$index] : null;
+
+        if ($reverse)
+        {
+            $attributes = array_flip($attributes);
+        }
+
+        return $attributes;
     }
 }

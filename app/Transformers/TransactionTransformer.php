@@ -3,9 +3,8 @@
 namespace App\Transformers;
 
 use App\Transaction;
-use League\Fractal\TransformerAbstract;
 
-class TransactionTransformer extends TransformerAbstract
+class TransactionTransformer extends BaseTransformer
 {
     /**
      * List of resources to automatically include
@@ -45,10 +44,30 @@ class TransactionTransformer extends TransformerAbstract
             'updatedDate'       => (string)$transaction->updated_at,
             'deletedDate'       => isset($transaction->deleted_at) ? (string)$transaction->deleted_at : null,
 
+            [
+                'rel' => 'self',
+                'href' => route('transactions.show', $transaction->id),
+            ],
+            [
+                'rel' => 'transaction.categories',
+                'href' => route('transactions.categories.index', $transaction->id),
+            ],
+            [
+                'rel' => 'transaction.sellers',
+                'href' => route('transactions.sellers.index', $transaction->id),
+            ],
+            [
+                'rel' => 'buyer',
+                'href' => route('buyers.show', $transaction->buyer_id),
+            ],
+            [
+                'rel' => 'product',
+                'href' => route('products.show', $transaction->product_id),
+            ],
         ];
     }
 
-    public static function originalAttribute($index)
+    protected static function getOriginalAttributes($reverse=false)
     {
         $attributes = [
             'identifier'        => 'id',
@@ -61,8 +80,13 @@ class TransactionTransformer extends TransformerAbstract
             'updatedDate'       => 'updated_at',
             'deletedDate'       => 'deleted_at',
         ];
-        return array_key_exists($index, $attributes) ?
-            $attributes[$index] : null;
+
+        if ($reverse)
+        {
+            $attributes = array_flip($attributes);
+        }
+
+        return $attributes;
     }
 }
 

@@ -70,10 +70,6 @@ Route::apiResource('products.buyers.transactions','Product\ProductBuyerTransacti
 Route::apiResource('products.categories','Product\ProductCategoryController', ['only'=>['index','update','destroy']]);
 Route::apiResource('products.transactions','Product\ProductTransactionController', ['only'=>['index']]);
 
-
-
-
-
 /**
  * Sellers
  */

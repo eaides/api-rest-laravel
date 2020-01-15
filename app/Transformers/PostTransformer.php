@@ -3,9 +3,8 @@
 namespace App\Transformers;
 
 use App\Post;
-use League\Fractal\TransformerAbstract;
 
-class PostTransformer extends TransformerAbstract
+class PostTransformer extends BaseTransformer
 {
     /**
      * List of resources to automatically include
@@ -48,10 +47,25 @@ class PostTransformer extends TransformerAbstract
             'creationDate'      => (string)$post->created_at,
             'updatedDate'       => (string)$post->updated_at,
             'deletedDate'       => isset($post->deleted_at) ? (string)$post->deleted_at : null,
+
+            'links' => [
+                [
+                    'rel' => 'self',
+                    'href' => route('posts.show', $post->id),
+                ],
+                [
+                    'rel' => 'section',
+                    'href' => route('sections.show', $post->section_id),
+                ],
+                [
+                    'rel' => 'user',
+                    'href' => route('users.show', $post->user_id),
+                ],
+            ],
         ];
     }
 
-    public static function originalAttribute($index)
+    protected static function getOriginalAttributes($reverse=false)
     {
         $attributes = [
             'identifier'        => 'id',
@@ -66,7 +80,12 @@ class PostTransformer extends TransformerAbstract
             'updatedDate'       => 'updated_at',
             'deletedDate'       => 'deleted_at',
         ];
-        return array_key_exists($index, $attributes) ?
-            $attributes[$index] : null;
+
+        if ($reverse)
+        {
+            $attributes = array_flip($attributes);
+        }
+
+        return $attributes;
     }
 }

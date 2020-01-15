@@ -2,11 +2,9 @@
 
 namespace App\Transformers;
 
-use App\Observers\ProductObserver;
 use App\Product;
-use League\Fractal\TransformerAbstract;
 
-class ProductTransformer extends TransformerAbstract
+class ProductTransformer extends BaseTransformer
 {
     /**
      * List of resources to automatically include
@@ -52,10 +50,32 @@ class ProductTransformer extends TransformerAbstract
             'updatedDate'       => (string)$product->updated_at,
             'deletedDate'       => isset($product->deleted_at) ? (string)$product->deleted_at : null,
 
+            'links' => [
+                [
+                    'rel' => 'self',
+                    'href' => route('products.show', $product->id),
+                ],
+                [
+                    'rel' => 'product.buyers',
+                    'href' => route('products.buyers.index', $product->id),
+                ],
+                [
+                    'rel' => 'product.categories',
+                    'href' => route('products.categories.index', $product->id),
+                ],
+                [
+                    'rel' => 'product.transactions',
+                    'href' => route('products.transactions.index', $product->id),
+                ],
+                [
+                    'rel' => 'seller',
+                    'href' => route('sellers.show', $product->seller_id),
+                ],
+            ],
         ];
     }
 
-    public static function originalAttribute($index)
+    protected static function getOriginalAttributes($reverse=false)
     {
         $attributes = [
             'identifier'        => 'id',
@@ -72,7 +92,11 @@ class ProductTransformer extends TransformerAbstract
             'deletedDate'       => 'deleted_at',
         ];
 
-        return array_key_exists($index, $attributes) ?
-            $attributes[$index] : null;
+        if ($reverse)
+        {
+            $attributes = array_flip($attributes);
+        }
+
+        return $attributes;
     }
 }
