@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Helpers\Helper;
 use App\Mail\UserCreated;
 use App\Traits\ApiResponser;
+use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
@@ -25,6 +26,14 @@ use App\User;
 class UserController extends RegisterController
 {
     use ApiResponser;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('transform.input:'.UserTransformer::class)
+            ->only(['store','update']);
+    }
 
     /**
      * Display a listing of the resource.

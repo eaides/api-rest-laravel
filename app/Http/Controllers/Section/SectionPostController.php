@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use App\Http\Controllers\ApiController;
 use App\Post;
 use App\Section;
+use App\Transformers\PostTransformer;
 use App\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\Rule;
@@ -16,6 +17,15 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SectionPostController extends ApiController
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('transform.input:'.PostTransformer::class)
+            ->only(['store','update']);
+    }
+
     /**
      * Display a listing of the resource.
      *

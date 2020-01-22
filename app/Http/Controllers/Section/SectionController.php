@@ -3,12 +3,22 @@
 namespace App\Http\Controllers\Section;
 
 use App\Http\Controllers\ApiController;
+use App\Transformers\SectionTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Section;
 
 class SectionController extends ApiController
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('transform.input:'.SectionTransformer::class)
+            ->only(['store','update']);
+    }
+
     /**
      * Display a listing of the resource.
      *
