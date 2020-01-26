@@ -8,18 +8,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
 
-    use Notifiable, SoftDeletes;
+    use Notifiable, HasApiTokens, SoftDeletes;
 
     const ROLE_ADMIN = 'role_admin';
     const ROLE_PUBLISHER = 'role_publisher';
     const ROLE_READER = 'role_reader';
 
     const MINUTES_TO_RESEND = 15;
-
 
     /**
      * The attributes that should be mutated to dates.

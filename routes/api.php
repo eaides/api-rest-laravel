@@ -85,3 +85,6 @@ Route::apiResource('sellers.transactions','Seller\SellerTransactionController', 
 Route::apiResource('transactions','Transaction\TransactionController', ['only'=>['index','show']]);
 Route::apiResource('transactions.categories','Transaction\TransactionCategoryController', ['only'=>['index']]);
 Route::apiResource('transactions.sellers','Transaction\TransactionSellerController', ['only'=>['index']]);
+
+// add here the ouath post call to ensure to use the api middleware and not just the throttle middleware
+Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken')->name('passport.token');

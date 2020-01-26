@@ -1,0 +1,3 @@
+- install passport by composer (do composer install)
+- run artisan migrate (to create passpots tables)
+- tun artisan passport:install to create clients and keys

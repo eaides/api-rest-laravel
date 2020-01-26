@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -65,7 +66,8 @@ class Handler extends ExceptionHandler
         $pattern =  config('app.api_prefix') . '/*';
         if (
             !$disable_own_handler &&
-            ($disable_web_routes || $request->is($pattern))
+            ($disable_web_routes || $request->is($pattern)) &&
+            !$this->isFrontend($request)
         ) {
             if ($exception instanceof ValidationException)
             {
@@ -79,7 +81,8 @@ class Handler extends ExceptionHandler
             }
             if ($exception instanceof AuthenticationException)
             {
-                return $this->errorResponse("User Unauthenticated", 401);
+                return $this->unauthenticated($request, $exception);
+                // return $this->errorResponse("User Unauthenticated", 401);
             }
             if ($exception instanceof UnauthorizedException)
             {
@@ -105,6 +108,13 @@ class Handler extends ExceptionHandler
                 }
             }
 
+            if ($exception instanceof TokenMismatchException)
+            {
+                return redirect()
+                    ->back()
+                    ->withInput($request->input());
+            }
+
             // unexpected exception
             if (!config('app.debug'))
             {
@@ -117,5 +127,16 @@ class Handler extends ExceptionHandler
 
         }
         return parent::render($request, $exception);
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @param $request
+     * @return mixed
+     */
+    private function isFrontend($request)
+    {
+        return $request->acceptsHtml() &&
+            collect($request->route()->middleware())->contains('web');
     }
 }
