@@ -113,4 +113,15 @@ class Helper
         return $image_name;
     }
 
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @param $request
+     * @return mixed
+     */
+    public static function isFrontend($request)
+    {
+        return $request->acceptsHtml() &&
+            collect($request->route()->middleware())->contains('web');
+    }
+
 }

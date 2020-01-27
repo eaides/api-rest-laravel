@@ -23,13 +23,6 @@ if ($disable_web_routes)
 {
     // @todo replace all by API functions
 
-    Route::get('/home', 'HomeController@index')->name('home');
-
-    Route::get('/', function () {
-        return view('welcome');
-    })->middleware('guest');
-
-
     // Authentication Routes...
     Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
     Route::post('login', 'Auth\LoginController@login');
@@ -48,6 +41,13 @@ if ($disable_web_routes)
 
     // Do not use Laravel Email Verification Routes...
     // we have already implemented those routes by API methods
+
+    // frontend section
+    Route::get('/home', 'HomeController@index')->name('home');
+
+    Route::get('/', function () {
+        return view('welcome');
+    })->middleware('guest');
 
     return;
 }

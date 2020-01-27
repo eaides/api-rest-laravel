@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Helpers\Helper;
 use App\Traits\ApiResponser;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
@@ -58,6 +59,7 @@ class Handler extends ExceptionHandler
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
+     * @throws Exception
      */
     public function render($request, Exception $exception)
     {
@@ -67,7 +69,7 @@ class Handler extends ExceptionHandler
         if (
             !$disable_own_handler &&
             ($disable_web_routes || $request->is($pattern)) &&
-            !$this->isFrontend($request)
+            !Helper::isFrontend($request)
         ) {
             if ($exception instanceof ValidationException)
             {
@@ -130,13 +132,17 @@ class Handler extends ExceptionHandler
     }
 
     /**
+     * Convert an authentication exception into a response.
+     *
      * @param  \Illuminate\Http\Request  $request
-     * @param $request
-     * @return mixed
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    private function isFrontend($request)
+    protected function unauthenticated($request, AuthenticationException $exception)
     {
-        return $request->acceptsHtml() &&
-            collect($request->route()->middleware())->contains('web');
+        return ($request->expectsJson() || !Helper::isFrontend($request))
+            ? $this->errorResponse($exception->getMessage(), 401)
+            : redirect()->guest($exception->redirectTo() ?? route('login'));
     }
+
 }
