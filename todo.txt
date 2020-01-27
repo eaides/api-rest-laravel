@@ -1,3 +1,38 @@
 - install passport by composer (do composer install)
 - run artisan migrate (to create passpots tables)
-- tun artisan passport:install to create clients and keys
+- run artisan passport:install to create clients and keys
+
+
+
+-------------------------------------------------------------------------------
+client.credentials
+
+- create a client using console:
+    artisan passport:client
+        can use id 0
+    copy client_id and client_secret
+
+obtain client credential token (Bearer) from
+    api/oauth/token
+        use POST and body form data:
+        grant_type = client_credentials
+        client_id and client_secret the values obtained by passport:client
+
+    receive token of type Bearer
+
+use the client.credential
+    send the required request and put in the Header
+
+    Authorization               the value will be like
+Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZjMzNjVmYzhkOTBhODczNGUxZWYwODAyOGIwM2IyZTY4NTEzMmM3MWMxOTFkOWViNDg0YWJmYTE5OTM4ZTk0ZTc0ZmMzNzgzY2NkNzQ0NzYiLCJpYXQiOjE1ODAxMTEwNjEsIm5iZiI6MTU4MDExMTA2MSwiZXhwIjoxNTgwMTEyODYxLCJzdWIiOiIiLCJzY29wZXMiOltdfQ.ULs1Kr-DkC0VqJvQKfw2bbHb6wiDAJd5SYFQbyMikjmjUA8a5FocA-rfzQAF-bNXzFYawh55BuCDsScEMonHv_FGDDpVV-prlu0n74fPW_-zjKfrlumfcRLZVmTu-L30Xb0ed_l0bZkI4HRCF8-1jWkhz2KJ7yX4oHp3TBlUPVS0S9pXFQKcQkoDf5yWBokcE34cOUTKofA93mUnqFILVYeqykxakv3YP1aYnt5DDlY1cESZTNyU541r7oVwQrgGQS_04liLokDMJguO6nodvCFL6WFVuw8hfKdeTfh9CC-emMlSA_xvvQMmDkmP574NB8NFMwWgdV-j_jIl7la9uWeWkwSYumvFALSeGYs9X5f3DAWAc3QSTj-xfnsEkhnHTtpRUgHVh8t5RbibVMTCxdNlWPfbwYDYi5EaGXd-_42VddAiMGRUIJ1xqu5_ELHoOUP3dhsgvHOh_9hZA2kDHvTLQLZHGba84c9SHBWqkEYpRoCRnfOqkT6ndibTlyV6ZUD3mM8IQhxaXYaHO2yUwhEof3AwaBdMfk2eJgB70ONl5GhC1QMxPA-ZJSiAV2yPActWtPxfkP1hzqF7LfPw_9tQA-V7vv65ETj6dNi3krsZrdNCfpwDj9-eWaH0Aioy8CIpWKLDQKvSOkS_rJ5glWL2u9eTUlJNOm5I4dXgNMM
+
+
+In homestead/work, the client id and secret are:
+Client ID: 3
+Client secret: IE6WzcSI0Y0r5xjnEbcQhMHpdZCONkWE5d2Iz4KH
+
+In Home, homestead/computer
+
+In home, homestead/laptop
+
+-------------------------------------------------------------------------------
