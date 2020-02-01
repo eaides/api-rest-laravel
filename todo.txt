@@ -51,6 +51,9 @@ Client secret: 3UuudssAq8eHs9EJuH3R4vT6pd3m2ePsO4BKxEab
 -------------------------------------------------------------------------------
 In home, homestead/laptop
 -------------------------------------------------------------------------------
+Client ID: 3
+Client secret: jX3ClQOfHxDqzc6Z9tyHltq0Qh76VeB3HH82uTvP
+
 
 
 
