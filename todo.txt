@@ -26,13 +26,32 @@ use the client.credential
     Authorization               the value will be like
 Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZjMzNjVmYzhkOTBhODczNGUxZWYwODAyOGIwM2IyZTY4NTEzMmM3MWMxOTFkOWViNDg0YWJmYTE5OTM4ZTk0ZTc0ZmMzNzgzY2NkNzQ0NzYiLCJpYXQiOjE1ODAxMTEwNjEsIm5iZiI6MTU4MDExMTA2MSwiZXhwIjoxNTgwMTEyODYxLCJzdWIiOiIiLCJzY29wZXMiOltdfQ.ULs1Kr-DkC0VqJvQKfw2bbHb6wiDAJd5SYFQbyMikjmjUA8a5FocA-rfzQAF-bNXzFYawh55BuCDsScEMonHv_FGDDpVV-prlu0n74fPW_-zjKfrlumfcRLZVmTu-L30Xb0ed_l0bZkI4HRCF8-1jWkhz2KJ7yX4oHp3TBlUPVS0S9pXFQKcQkoDf5yWBokcE34cOUTKofA93mUnqFILVYeqykxakv3YP1aYnt5DDlY1cESZTNyU541r7oVwQrgGQS_04liLokDMJguO6nodvCFL6WFVuw8hfKdeTfh9CC-emMlSA_xvvQMmDkmP574NB8NFMwWgdV-j_jIl7la9uWeWkwSYumvFALSeGYs9X5f3DAWAc3QSTj-xfnsEkhnHTtpRUgHVh8t5RbibVMTCxdNlWPfbwYDYi5EaGXd-_42VddAiMGRUIJ1xqu5_ELHoOUP3dhsgvHOh_9hZA2kDHvTLQLZHGba84c9SHBWqkEYpRoCRnfOqkT6ndibTlyV6ZUD3mM8IQhxaXYaHO2yUwhEof3AwaBdMfk2eJgB70ONl5GhC1QMxPA-ZJSiAV2yPActWtPxfkP1hzqF7LfPw_9tQA-V7vv65ETj6dNi3krsZrdNCfpwDj9-eWaH0Aioy8CIpWKLDQKvSOkS_rJ5glWL2u9eTUlJNOm5I4dXgNMM
 
-
+-------------------------------------------------------------------------------
 In homestead/work, the client id and secret are:
+-------------------------------------------------------------------------------
 Client ID: 3
 Client secret: IE6WzcSI0Y0r5xjnEbcQhMHpdZCONkWE5d2Iz4KH
+{ "token_type":"Bearer",
+  "expires_in":1800,
+  "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZjMzNjVmYzhkOTBhODczNGUxZWYwODAyOGIwM2IyZTY4NTEzMmM3MWMxOTFkOWViNDg0YWJmYTE5OTM4ZTk0ZTc0ZmMzNzgzY2NkNzQ0NzYiLCJpYXQiOjE1ODAxMTEwNjEsIm5iZiI6MTU4MDExMTA2MSwiZXhwIjoxNTgwMTEyODYxLCJzdWIiOiIiLCJzY29wZXMiOltdfQ.ULs1Kr-DkC0VqJvQKfw2bbHb6wiDAJd5SYFQbyMikjmjUA8a5FocA-rfzQAF-bNXzFYawh55BuCDsScEMonHv_FGDDpVV-prlu0n74fPW_-zjKfrlumfcRLZVmTu-L30Xb0ed_l0bZkI4HRCF8-1jWkhz2KJ7yX4oHp3TBlUPVS0S9pXFQKcQkoDf5yWBokcE34cOUTKofA93mUnqFILVYeqykxakv3YP1aYnt5DDlY1cESZTNyU541r7oVwQrgGQS_04liLokDMJguO6nodvCFL6WFVuw8hfKdeTfh9CC-emMlSA_xvvQMmDkmP574NB8NFMwWgdV-j_jIl7la9uWeWkwSYumvFALSeGYs9X5f3DAWAc3QSTj-xfnsEkhnHTtpRUgHVh8t5RbibVMTCxdNlWPfbwYDYi5EaGXd-_42VddAiMGRUIJ1xqu5_ELHoOUP3dhsgvHOh_9hZA2kDHvTLQLZHGba84c9SHBWqkEYpRoCRnfOqkT6ndibTlyV6ZUD3mM8IQhxaXYaHO2yUwhEof3AwaBdMfk2eJgB70ONl5GhC1QMxPA-ZJSiAV2yPActWtPxfkP1hzqF7LfPw_9tQA-V7vv65ETj6dNi3krsZrdNCfpwDj9-eWaH0Aioy8CIpWKLDQKvSOkS_rJ5glWL2u9eTUlJNOm5I4dXgNMM"
+}
 
+
+
+-------------------------------------------------------------------------------
 In Home, homestead/computer
+-------------------------------------------------------------------------------
+Client ID: 3
+Client secret: 3UuudssAq8eHs9EJuH3R4vT6pd3m2ePsO4BKxEab
+{ "token_type":"Bearer",
+  "expires_in":1800,
+  "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZGZiNzQ2NDMzZWJmZTdjMTI1OGQ0OGU3YmZhMWRmMTFjY2Q5MWM2NTNlOGMyNjJhMjBhMzEwOGM0ZTM2OWY1OGQzMzBiY2YxYWJkZWJlYWUiLCJpYXQiOjE1ODA1OTE1MjYsIm5iZiI6MTU4MDU5MTUyNiwiZXhwIjoxNTgwNTkzMzI2LCJzdWIiOiIiLCJzY29wZXMiOltdfQ.HiFjlG1IEUJhDeAZXS1zJbIlz6SNMDdZiAXdqf7St8yohpoKM1YodaTXp0Z7g5aNqRzdtx8kWd7IV9T3vBwlJAc0UuFLsbwGze30e6QBQ6J26c56On1j2mWz8vU00lg5ePYAHpEIanhYIJM1mw3v4HacE51NxmXBasKG4fOQlV4YeFOvlRhP41zjee030WTykfyT_8DIDhOufr4biSKdoWDEuam0BFgdOefLum4JRRKYvq1zTzrMLFcm1elYpjSa1LN43OVVcD6rYAUkkMk5Red4h0G74X0JD88--_-NA-X9yZXxB0GiVdvjiCVubjok4fase3iaKGokdmuIgCaupcCTVkYFRNkh5AIkx7Q46ZtQJgd3Ydjd5uaJ3geQxSYBDsACAicnLF1Nk-wMZbHJEUXlj0013nnGJv-lnf6jbd2mRzGmj0nvOTHg3NLH8YTPBgT9BNwDxejCZnwqIUZ6CSibut88zwzhQ6ZB45Al2njdn0as67h4GniAGsJ1S03BxdyM5H_LxZVtZNvTa8mwVjsIysQ7dY_dqOEdjKGPLK8_enirGycciCY50PGQ_gUMbF9g7vY3si0ZdSTuag_YjULPBSXrvr6xuhPA4kDcYTjE06H-cSYafP0BI5Cd9BpT-z-QWP4y0Lz-ckSLVEhN4o7GM_E_lB72vrtQB_AJwiE"
+}
 
+-------------------------------------------------------------------------------
 In home, homestead/laptop
+-------------------------------------------------------------------------------
+
+
 
 -------------------------------------------------------------------------------
