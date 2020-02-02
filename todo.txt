@@ -53,7 +53,10 @@ In home, homestead/laptop
 -------------------------------------------------------------------------------
 Client ID: 3
 Client secret: jX3ClQOfHxDqzc6Z9tyHltq0Qh76VeB3HH82uTvP
-
+{ "token_type":"Bearer",
+  "expires_in":1799,
+  "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiN2E5N2QwMDA5M2Q2ZTNmMzZjOTU0OWUzODhlMDU3MDA4YzY1ODk5ZjA2MWQ1NjZlMWZhYzEzN2YzNGY2NzdiMDVhMWFmMmMyMmUzODZjZjQiLCJpYXQiOjE1ODA2Njk4MDEsIm5iZiI6MTU4MDY2OTgwMSwiZXhwIjoxNTgwNjcxNjAwLCJzdWIiOiIiLCJzY29wZXMiOltdfQ.npKjim9OctfAmUyPDCan2_Od_J81X9JdxVNd9vX3tSfrG8Vq7sW92_AtpoPVUBTZ1m4SdDw7FsemhEiRrxQ2XaxEANfW29n21YLw85dzNCAmEvSUQbhqIFf-7y5V_-Cpy89YRYFqw34Aq-rghV0K4lh3s23B3KRO3zVviWPzHkJyg4wQJAUpUFhnfw4oRlquHfGiBGOvLuBkCDJT5EmpVco1KTPqBEXE2zxID-Mff5V8OfR97IGBKbtle0bZQsEoaOPfHgyKafFD3sJgFJgvfJRiJd2hDny6U2VyhvrN27GCFIvQPZjCHfs6U-AktdCHFI5jrOujeu6QLKHbadA5wXHpy7z9ZAOgHTqwQ49t0_8Ldo7yd-MXxYrpDTqG2U5lvhW2XW0eHpf4UuvmLpOheI8bIutJsKRiqQhSmB_LeQZOrNzGfZKLU8ByT9cCpLlIfDrHdht_BgIe9vooXDenL2q-NFZL-I0XahmpSFU0sBUe0bsncMuDRjhdEnrsrsZHFEG2H3SFzT8YI8zKMWRhBDZJ4FP75nT6cCNd5oa1SFZl3i_LTHp2cT6HipuOYbb65FYnf7lGGbDczBb7rUUSCOCpAuSeSRMqnousIUrVt2j-_TxcJz37RNKz_V49tuYlZ-ZbiG0sIllOlcg65jLT1VtgHOu-FQlwHW21Xd-esI4"
+}
 
 
 
