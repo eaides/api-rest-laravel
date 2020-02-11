@@ -39,7 +39,7 @@ In homestead/work, the client id and secret are:
    ### Create a client of type client credential using console: ###
    > artisan passport:client
        user-id: 0
-       name: "client"
+       name: "type-client"
        callback: press enter
    New client created successfully.
    Client ID: 3
@@ -59,7 +59,7 @@ In homestead/work, the client id and secret are:
    ---------------------------------------------------------
    ### Create a client of type password using console: ###
    > artisan passport:client --password
-       name: admin-password
+       name: type-password
    Password grant client created successfully.
    Client ID: 4
    Client secret: zsBev3tHzvlVdhcYSzbxh7BNFEweIaoCkNiO7F0G
@@ -85,7 +85,7 @@ In Home, homestead/computer
    ### Create a client of type client credential using console: ###
    > artisan passport:client
        user-id: 0
-       name: "client"
+       name: "type-client"
        callback: press enter
    New client created successfully.
    Client ID: 3
@@ -105,26 +105,24 @@ In Home, homestead/computer
    ---------------------------------------------------------
    ### Create a client of type password using console: ###
    > artisan passport:client --password
-       name: admin-password
+       name: type-password
    Password grant client created successfully.
-   Client ID: TODO
-   Client secret: TODO
+   Client ID: 4
+   Client secret: njp4qm9u0KKw89rNmeM4stHG52xJnHC8dxOcHgOx
 
    POST http://api-rest-laravel.com.devel/api/oauth/token ->
    with DATA { "grant_type":"password",
             "client_id":"4",
-            "client_secret":"TODO",
+            "client_secret":"njp4qm9u0KKw89rNmeM4stHG52xJnHC8dxOcHgOx",
             "username":"admin@admin.com",
             "password":"admin",
           }
    RESPONSE (like):
    { "token_type": "Bearer",
      "expires_in": 1800,
-     "access_token": "TODO",
-     "refresh_token": "TODO"
+     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiOWY5NjIxMWRiMzNkNGJiNDJiYWZlYWU5NmJlMGExYjRlMzNkOTMzNTE1MzNjNzU3ZmIxNzMyMGVjMDViZWY5ODRjNDFmYWM5ZWFiNzdjNGQiLCJpYXQiOjE1ODE0NDk0MjUsIm5iZiI6MTU4MTQ0OTQyNSwiZXhwIjoxNTgxNDUxMjI0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.Y0olMK6AlvsdBLvtI321oM59udmNuKVn4rgQKJYb0zBCyIkHnO-myc6I9XRCngwbgwJgtsSnD_U8vVaqhZV-7kffc20hHwYaLJvH7XAaE2jZaBTLwvHDki-TGR8e0ZkYfQl9Nf_GtwaL32qXHGRoSSOkP1AFgkbQ0aHP32weWmT6lDzGDQ8dLEYtLASMiEvZ6Z8XShIfpxuvlz1JJs1bBhEx_G5VG20T8FQX2bRHCpy5oxIgQiYQoppBK3zDUp4dDt6LNWFEgVkF8ak7-Dmgeu5arLpT55BPCrYPQqOOw2oPQSKlGiAcicfDAwZRWO7rrbAV2vJhtQBy10ZYyo3rK66mujSY6RqellL2jguExiOSd9pagEtnV4TnITbDOMDfYFQ-N7qaCm83m3gOj1fRArkWyExgP0tP0Wk6oKd9oHU2epwy29Qe0MpXMVj6P2mqZXSlTAk53VCLS9_kE7bjKB25wNpdLL3B9e1ZHO5ejQ1TJq2eu1I5TGpAm1uHz6qcx6ROVNYtCXyK3l4kI_UCaIDGXZk6G_s3MF1um1xAZ8mvby-YDVx-3-vauhCUrqzPJiV9goCgIR_g92Lrmc31dAqy3V4jELxgugMVyXRi2ZpNTz6dvZnKpLbLCqZ0IAObB1JWmDh8PqXFtx7pA4IHvYcGEXQap_A5kAj9h5972RQ",
+         "refresh_token": "def502000553f8d64c2f038fb493d22a1f59d9bb67520fd4901b2618152c73df35e66d1b31d84be154a673652c48faf1cc1c646d1bf3e0ee3ef0f8ebf793cd18a71a42f886a6c54961cace0d4e6511d51d616d4075ac81edcbe9b9026d16cac5c8e2dc7f4052abf77bad48e10b50cf2a50ac795b3eb6d01603cf275c86138468d8a4e8a1031a60a70d7a452cbc70cc7a90d27f54c6d5635096a6b16d50e97d5a641f5519ee9ddb419cc39eaf676bb820fbb37130af2a81e7119ba8259639da78c3e0c0d69808cadc12a5730b1a67b382d483c9e7cf3485589c28898b5974d324895611f3c42446d1961bf5cae3537d2d5db0786b0abd0927450fec54992ba42ba83e40c981e6946fbf6b46ca5c3dcc398209e50608cde60e9f86af883397fc859f611f321af6a2862f5d804ce9375ce9b568cc77e10e45f773e56dc57af8d2bc72139fca236b6d1af03b1ae7b544643412368c8eae819b34ddc685ca4a8ac525a2"
    }
-
-
 
 -------------------------------------------------------------------------------
 In home, homestead/laptop
@@ -132,7 +130,7 @@ In home, homestead/laptop
    ### Create a client of type client credential using console: ###
    > artisan passport:client
        user-id: 0
-       name: "client"
+       name: "type-client"
        callback: press enter
    New client created successfully.
    Client ID: 3
@@ -152,7 +150,7 @@ In home, homestead/laptop
    ---------------------------------------------------------
    ### Create a client of type password using console: ###
    > artisan passport:client --password
-       name: admin-password
+       name: type-password
    Password grant client created successfully.
    Client ID: TODO
    Client secret: TODO
