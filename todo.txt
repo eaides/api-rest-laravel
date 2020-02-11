@@ -158,15 +158,15 @@ In home, homestead/laptop
    POST http://api-rest-laravel.com.devel/api/oauth/token ->
    with DATA { "grant_type":"password",
             "client_id":"4",
-            "client_secret":"TODO",
+            "client_secret":"bmuPpu9waFVfG62GKkuahze4xzN2jzo4ZAOl1ubb",
             "username":"admin@admin.com",
             "password":"admin",
           }
    RESPONSE (like):
    { "token_type": "Bearer",
      "expires_in": 1800,
-     "access_token": "TODO",
-     "refresh_token": "TODO"
+     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiMjVmNWE5YmIwZDc4M2IzMGFhMmVhYjQ5NGJmMjc0YzdmYmIxNDVjMGI5MmFlMjJmM2QzNjQzZWRkNmU1NjU3MDQyYTU3M2FmYjllOGNjYTQiLCJpYXQiOjE1ODE0NDk4OTEsIm5iZiI6MTU4MTQ0OTg5MSwiZXhwIjoxNTgxNDUxNjkxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.sUdQ0jeHzVvPu5tzlb_xxJqNVcAKR7562y4kgNLWsw2lOWCy7VIEB2DNiCU1HQZ4_-DBYm97A9iB87oEjrdk_Pfj4PPiu4scCOHroluI7FReshA9QNK1wHPgH1typavp0Aoj2mm1EeVdbhxrxoRyCHLDVMTIcaxweh1HZWQDRFw40SDNhgIQtscjks_EIyVrQ8keMSSAJPmGHdlMaPGl-wUz1Wl8YEfQVkubF-ebdqN0pUW_YuOlklPlp0qAkTcC-jIGpNqjX9KIP6F7MBY3tkpKH1r7csETdePSLW6LGefoXA364tWHsORQPAyqzvkUSwaDXrsqTqMn8upjtB_MVgIGMrN1F4Wvv7ixxIXqQTgJ6vaWOBmVEa835Kr1B6geM2TAQqy5owb4s2qmmUQBb5ZAVS4Ta6MLpkKAYcl-roP8sUXHcROAHaX3M7eUXQcY8sqL1ff8ThVKNiopCYHEwkXG2B1hfiHnGUmoKUlyQgC8RHBU_yPpLRmc8RCWWBXT0_zK6Qhvo2ejfgHFAyV8lNYXSLDA-JsHhFcNup3P2nIlslbE3J6Lenr2eRL6l_IYFvsv5leKp_WpNgrh9EEpoq2vLPqEcEOFUrAsGXPNlZj5tSlC5t-vENw0RslR4ysVT-9X8ABOoFveCEXaDZzfNIuxf62vLA000sW0FZkTLt4",
+         "refresh_token": "def50200b977518e2d39a33c1d746e8b17f83971bb3aeefaed907df48e934e0c4ba3e918c944f09aeb434417873d93ceb1a44639774d29c2ffcc9207abadae6b3e6b3c6daabcbe5e9189192fc0986858413a30bf1d8c1194eb184e1f0918c996ff9689f6a4c54dc79079793ccda52a0eb852aa654e4e47f8e44ee55d7763ef610e8fc022104bd1082bef47dd7c0e456ed7070301f03d3b1b211779354ed60ea9a77f1e77508d6fea79150bd95fcd4b42cd7ba3941e3673b5fb79c13c295bf3c1324d1e39202dd249a543c67edcb8ddeb5298bafe54028dba0261a075597eaf30190137661dc97dc7ecb28281b7a7c558f00bc6acf4dda39389bb981f06356b0f15ecfaa63412a42151cefba95284706d239735e65ab7f95355394d77a2e80aa5dea5a3e41e7ad9c434a94139af1e57f536cd2ca39e5495a21eab6b427f88469da3260c742ba32f42b764d98ba248c51091300dbf77f906304b2f75361cc8e1b4a4"
    }
 
 -------------------------------------------------------------------------------
