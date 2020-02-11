@@ -22,6 +22,8 @@ class SectionPostController extends ApiController
     {
         $this->middleware('client.credentials')
             ->only(['index']);
+        $this->middleware('auth:api')
+            ->except(['index']);
 
         $this->middleware('transform.input:'.PostTransformer::class)
             ->only(['store','update']);

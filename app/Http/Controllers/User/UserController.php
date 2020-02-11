@@ -33,6 +33,10 @@ class UserController extends RegisterController
         {
             $this->middleware('client.credentials')
                 ->only(['store','resend']);
+            $this->middleware('auth:api')
+                ->except(['verify','store','resend']);
+            $this->middleware('throttle:6,1')
+                ->only('verify', 'resend');
         }
         else
         {

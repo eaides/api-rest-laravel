@@ -9,55 +9,166 @@ client.credentials
 
 - create a client using console:
     artisan passport:client
-        can use id 0
-    copy client_id and client_secret
+        can use user-id 0
 
-obtain client credential token (Bearer) from
+- create a client of type password using console:
+    artisan passport:client --password
+    name: password
+
+obtain clients credential token (Bearer) from
     api/oauth/token
         use POST and body form data:
-        grant_type = client_credentials
+        grant_type = client_credentials // password
         client_id and client_secret the values obtained by passport:client
+        other required data by type (see below examples)
 
     receive token of type Bearer
 
-use the client.credential
+## USING the credentials ##
+    use the client.credential
     send the required request and put in the Header
 
     Authorization               the value will be like
 Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZjMzNjVmYzhkOTBhODczNGUxZWYwODAyOGIwM2IyZTY4NTEzMmM3MWMxOTFkOWViNDg0YWJmYTE5OTM4ZTk0ZTc0ZmMzNzgzY2NkNzQ0NzYiLCJpYXQiOjE1ODAxMTEwNjEsIm5iZiI6MTU4MDExMTA2MSwiZXhwIjoxNTgwMTEyODYxLCJzdWIiOiIiLCJzY29wZXMiOltdfQ.ULs1Kr-DkC0VqJvQKfw2bbHb6wiDAJd5SYFQbyMikjmjUA8a5FocA-rfzQAF-bNXzFYawh55BuCDsScEMonHv_FGDDpVV-prlu0n74fPW_-zjKfrlumfcRLZVmTu-L30Xb0ed_l0bZkI4HRCF8-1jWkhz2KJ7yX4oHp3TBlUPVS0S9pXFQKcQkoDf5yWBokcE34cOUTKofA93mUnqFILVYeqykxakv3YP1aYnt5DDlY1cESZTNyU541r7oVwQrgGQS_04liLokDMJguO6nodvCFL6WFVuw8hfKdeTfh9CC-emMlSA_xvvQMmDkmP574NB8NFMwWgdV-j_jIl7la9uWeWkwSYumvFALSeGYs9X5f3DAWAc3QSTj-xfnsEkhnHTtpRUgHVh8t5RbibVMTCxdNlWPfbwYDYi5EaGXd-_42VddAiMGRUIJ1xqu5_ELHoOUP3dhsgvHOh_9hZA2kDHvTLQLZHGba84c9SHBWqkEYpRoCRnfOqkT6ndibTlyV6ZUD3mM8IQhxaXYaHO2yUwhEof3AwaBdMfk2eJgB70ONl5GhC1QMxPA-ZJSiAV2yPActWtPxfkP1hzqF7LfPw_9tQA-V7vv65ETj6dNi3krsZrdNCfpwDj9-eWaH0Aioy8CIpWKLDQKvSOkS_rJ5glWL2u9eTUlJNOm5I4dXgNMM
 
+
+
 -------------------------------------------------------------------------------
 In homestead/work, the client id and secret are:
 -------------------------------------------------------------------------------
-Client ID: 3
-Client secret: IE6WzcSI0Y0r5xjnEbcQhMHpdZCONkWE5d2Iz4KH
-{ "token_type":"Bearer",
-  "expires_in":1800,
-  "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZjMzNjVmYzhkOTBhODczNGUxZWYwODAyOGIwM2IyZTY4NTEzMmM3MWMxOTFkOWViNDg0YWJmYTE5OTM4ZTk0ZTc0ZmMzNzgzY2NkNzQ0NzYiLCJpYXQiOjE1ODAxMTEwNjEsIm5iZiI6MTU4MDExMTA2MSwiZXhwIjoxNTgwMTEyODYxLCJzdWIiOiIiLCJzY29wZXMiOltdfQ.ULs1Kr-DkC0VqJvQKfw2bbHb6wiDAJd5SYFQbyMikjmjUA8a5FocA-rfzQAF-bNXzFYawh55BuCDsScEMonHv_FGDDpVV-prlu0n74fPW_-zjKfrlumfcRLZVmTu-L30Xb0ed_l0bZkI4HRCF8-1jWkhz2KJ7yX4oHp3TBlUPVS0S9pXFQKcQkoDf5yWBokcE34cOUTKofA93mUnqFILVYeqykxakv3YP1aYnt5DDlY1cESZTNyU541r7oVwQrgGQS_04liLokDMJguO6nodvCFL6WFVuw8hfKdeTfh9CC-emMlSA_xvvQMmDkmP574NB8NFMwWgdV-j_jIl7la9uWeWkwSYumvFALSeGYs9X5f3DAWAc3QSTj-xfnsEkhnHTtpRUgHVh8t5RbibVMTCxdNlWPfbwYDYi5EaGXd-_42VddAiMGRUIJ1xqu5_ELHoOUP3dhsgvHOh_9hZA2kDHvTLQLZHGba84c9SHBWqkEYpRoCRnfOqkT6ndibTlyV6ZUD3mM8IQhxaXYaHO2yUwhEof3AwaBdMfk2eJgB70ONl5GhC1QMxPA-ZJSiAV2yPActWtPxfkP1hzqF7LfPw_9tQA-V7vv65ETj6dNi3krsZrdNCfpwDj9-eWaH0Aioy8CIpWKLDQKvSOkS_rJ5glWL2u9eTUlJNOm5I4dXgNMM"
-}
+   ### Create a client of type client credential using console: ###
+   > artisan passport:client
+       user-id: 0
+       name: "client"
+       callback: press enter
+   New client created successfully.
+   Client ID: 3
+   Client secret: IE6WzcSI0Y0r5xjnEbcQhMHpdZCONkWE5d2Iz4KH
 
+   POST http://api-rest-laravel.com.devel/api/oauth/token ->
+   with DATA { "grant_type":"client_credentials",
+               "client_id":"3",
+               "client_secret":"IE6WzcSI0Y0r5xjnEbcQhMHpdZCONkWE5d2Iz4KH"
+             }
+   RESPONSE (like):
+   { "token_type":"Bearer",
+     "expires_in":1800,
+     "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZjMzNjVmYzhkOTBhODczNGUxZWYwODAyOGIwM2IyZTY4NTEzMmM3MWMxOTFkOWViNDg0YWJmYTE5OTM4ZTk0ZTc0ZmMzNzgzY2NkNzQ0NzYiLCJpYXQiOjE1ODAxMTEwNjEsIm5iZiI6MTU4MDExMTA2MSwiZXhwIjoxNTgwMTEyODYxLCJzdWIiOiIiLCJzY29wZXMiOltdfQ.ULs1Kr-DkC0VqJvQKfw2bbHb6wiDAJd5SYFQbyMikjmjUA8a5FocA-rfzQAF-bNXzFYawh55BuCDsScEMonHv_FGDDpVV-prlu0n74fPW_-zjKfrlumfcRLZVmTu-L30Xb0ed_l0bZkI4HRCF8-1jWkhz2KJ7yX4oHp3TBlUPVS0S9pXFQKcQkoDf5yWBokcE34cOUTKofA93mUnqFILVYeqykxakv3YP1aYnt5DDlY1cESZTNyU541r7oVwQrgGQS_04liLokDMJguO6nodvCFL6WFVuw8hfKdeTfh9CC-emMlSA_xvvQMmDkmP574NB8NFMwWgdV-j_jIl7la9uWeWkwSYumvFALSeGYs9X5f3DAWAc3QSTj-xfnsEkhnHTtpRUgHVh8t5RbibVMTCxdNlWPfbwYDYi5EaGXd-_42VddAiMGRUIJ1xqu5_ELHoOUP3dhsgvHOh_9hZA2kDHvTLQLZHGba84c9SHBWqkEYpRoCRnfOqkT6ndibTlyV6ZUD3mM8IQhxaXYaHO2yUwhEof3AwaBdMfk2eJgB70ONl5GhC1QMxPA-ZJSiAV2yPActWtPxfkP1hzqF7LfPw_9tQA-V7vv65ETj6dNi3krsZrdNCfpwDj9-eWaH0Aioy8CIpWKLDQKvSOkS_rJ5glWL2u9eTUlJNOm5I4dXgNMM"
+   }
 
+   ---------------------------------------------------------
+   ### Create a client of type password using console: ###
+   > artisan passport:client --password
+       name: admin-password
+   Password grant client created successfully.
+   Client ID: 4
+   Client secret: zsBev3tHzvlVdhcYSzbxh7BNFEweIaoCkNiO7F0G
+
+   POST http://api-rest-laravel.com.devel/api/oauth/token ->
+   with DATA { "grant_type":"password",
+               "client_id":"4",
+               "client_secret":"zsBev3tHzvlVdhcYSzbxh7BNFEweIaoCkNiO7F0G",
+               "username":"admin@admin.com",
+               "password":"admin",
+             }
+   RESPONSE (like):
+   { "token_type": "Bearer",
+     "expires_in": 1800,
+     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiNjM0ZDk5MDM5ZWVkZGU3MTM0YzE4MTFmYTlhMDAzOTY3MjNhN2Y5ZDNkNzVlOGRiM2Q5OTdiY2FmMzViMzNmNDNlM2JkMDI1NWU3YjM3ZmQiLCJpYXQiOjE1ODE0MDIzMzQsIm5iZiI6MTU4MTQwMjMzNCwiZXhwIjoxNTgxNDA0MTM0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.Lxeytg3bemCIWp5bRvjkeKF3ePHsfl7cUozv4821-a_rDHD-UFczu5CfwtaqdPZoxb3GAEo39b-3PQgG6jizsFnGAnYQxNvJP1b5ribM9ro1G99GYHxEBzWRX-rOpyc8cU-7eC04_2SmoyHqbs9lVNXGR_nXQIcGu-g5pp0bEi_K_ajAAneZji7w7odysbutPz7d7bekBH__t_xzVLDuXnIACP7kkHNEGOkp_99ScMMg_y7uPu6IrmPgJRzgcQWF7Tay7AbP03_dD8y8nwztiNk_mA0BRxx8dmYJMccDm6mblEvN7Iph9df3zFhsOhIPrFeYDIjMA6Z0zV4NrAALENNVtkrlirxICcUYFntSiLn9H3DF5u5zljjm9iO_FQwc9WaHH3-vODOCHSjt7Evx6FqxzCPaZJyyYFoxJypAhL-GTmXrYgYpjUxHzKhCj3vtAJ1jKg_SeAXSmEJERUovW8dkJDPvRuONl7oqcz6RoGcF1ZgWHiQbTKysSxRbWZn0JAG04WO_kVBlHOEbaL_P3-_ylPcTUyQLM93AAqRQvSKif5ZLGfxbP5mYH5Sdr42ppm3hgwtlHhLJL3Jn44gZLYG8yKCLjWZPLDGbhoOYnSKn8HiGvFUr919pFIT8fvnN8uhUoS3OYbuu-lFcrLl3d5ahIUfNZIyfxnwLDyQ_ipc",
+     "refresh_token": "def502006ed4c46358c29a75ccb76766d5ba513190d39d5f781d925898208e34734d5d406e0b54d87abedf809cd2d3f6a0524baa89fb06775d33b713da34c791141d42a3debec74f23f2354e033205d2ea17d7fdf9c04eb7f6e20828c339a9201cadbe41fb2e4ecb10b77d0dad12041e333d0914de9375ee67acdb2c7ce1e86ca234e187e79628f236ba98b29f31aa192b604b8cecdbe39470dc4eb336ca14e9a1bf25d66622d72b01622c0c20c91a80e44307603a8bcfd3475c80e705b0b53e395ca63f6551dca5b75023d18fe9b3a205983ffb6227c1cfd20f622f99fc09b54a4c26fedbe531409df9820877c9db95cb95f20306aa3cb57994893c4e8166c7659c82b7c23c6254dcf338b82456bc161cf38d5c51de6744b7c95ec555cee0d5d4a1888543a311752e13cc4cbb521a328cdde54829e1feea438b1e85580b14486971574a6f4829efc5b5e20e20e2ba9d713fe4c374e9ee5a805d5bd983cc86c281"
+   }
+   ---------------------------------------------------------
 
 -------------------------------------------------------------------------------
 In Home, homestead/computer
 -------------------------------------------------------------------------------
-Client ID: 3
-Client secret: 3UuudssAq8eHs9EJuH3R4vT6pd3m2ePsO4BKxEab
-{ "token_type":"Bearer",
-  "expires_in":1800,
-  "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZGZiNzQ2NDMzZWJmZTdjMTI1OGQ0OGU3YmZhMWRmMTFjY2Q5MWM2NTNlOGMyNjJhMjBhMzEwOGM0ZTM2OWY1OGQzMzBiY2YxYWJkZWJlYWUiLCJpYXQiOjE1ODA1OTE1MjYsIm5iZiI6MTU4MDU5MTUyNiwiZXhwIjoxNTgwNTkzMzI2LCJzdWIiOiIiLCJzY29wZXMiOltdfQ.HiFjlG1IEUJhDeAZXS1zJbIlz6SNMDdZiAXdqf7St8yohpoKM1YodaTXp0Z7g5aNqRzdtx8kWd7IV9T3vBwlJAc0UuFLsbwGze30e6QBQ6J26c56On1j2mWz8vU00lg5ePYAHpEIanhYIJM1mw3v4HacE51NxmXBasKG4fOQlV4YeFOvlRhP41zjee030WTykfyT_8DIDhOufr4biSKdoWDEuam0BFgdOefLum4JRRKYvq1zTzrMLFcm1elYpjSa1LN43OVVcD6rYAUkkMk5Red4h0G74X0JD88--_-NA-X9yZXxB0GiVdvjiCVubjok4fase3iaKGokdmuIgCaupcCTVkYFRNkh5AIkx7Q46ZtQJgd3Ydjd5uaJ3geQxSYBDsACAicnLF1Nk-wMZbHJEUXlj0013nnGJv-lnf6jbd2mRzGmj0nvOTHg3NLH8YTPBgT9BNwDxejCZnwqIUZ6CSibut88zwzhQ6ZB45Al2njdn0as67h4GniAGsJ1S03BxdyM5H_LxZVtZNvTa8mwVjsIysQ7dY_dqOEdjKGPLK8_enirGycciCY50PGQ_gUMbF9g7vY3si0ZdSTuag_YjULPBSXrvr6xuhPA4kDcYTjE06H-cSYafP0BI5Cd9BpT-z-QWP4y0Lz-ckSLVEhN4o7GM_E_lB72vrtQB_AJwiE"
-}
+   ### Create a client of type client credential using console: ###
+   > artisan passport:client
+       user-id: 0
+       name: "client"
+       callback: press enter
+   New client created successfully.
+   Client ID: 3
+   Client secret: 3UuudssAq8eHs9EJuH3R4vT6pd3m2ePsO4BKxEab
+
+   POST http://api-rest-laravel.com.devel/api/oauth/token ->
+   with DATA { "grant_type":"client_credentials",
+               "client_id":"3",
+               "client_secret":"3UuudssAq8eHs9EJuH3R4vT6pd3m2ePsO4BKxEab"
+             }
+   RESPONSE (like):
+   { "token_type":"Bearer",
+     "expires_in":1800,
+     "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZGZiNzQ2NDMzZWJmZTdjMTI1OGQ0OGU3YmZhMWRmMTFjY2Q5MWM2NTNlOGMyNjJhMjBhMzEwOGM0ZTM2OWY1OGQzMzBiY2YxYWJkZWJlYWUiLCJpYXQiOjE1ODA1OTE1MjYsIm5iZiI6MTU4MDU5MTUyNiwiZXhwIjoxNTgwNTkzMzI2LCJzdWIiOiIiLCJzY29wZXMiOltdfQ.HiFjlG1IEUJhDeAZXS1zJbIlz6SNMDdZiAXdqf7St8yohpoKM1YodaTXp0Z7g5aNqRzdtx8kWd7IV9T3vBwlJAc0UuFLsbwGze30e6QBQ6J26c56On1j2mWz8vU00lg5ePYAHpEIanhYIJM1mw3v4HacE51NxmXBasKG4fOQlV4YeFOvlRhP41zjee030WTykfyT_8DIDhOufr4biSKdoWDEuam0BFgdOefLum4JRRKYvq1zTzrMLFcm1elYpjSa1LN43OVVcD6rYAUkkMk5Red4h0G74X0JD88--_-NA-X9yZXxB0GiVdvjiCVubjok4fase3iaKGokdmuIgCaupcCTVkYFRNkh5AIkx7Q46ZtQJgd3Ydjd5uaJ3geQxSYBDsACAicnLF1Nk-wMZbHJEUXlj0013nnGJv-lnf6jbd2mRzGmj0nvOTHg3NLH8YTPBgT9BNwDxejCZnwqIUZ6CSibut88zwzhQ6ZB45Al2njdn0as67h4GniAGsJ1S03BxdyM5H_LxZVtZNvTa8mwVjsIysQ7dY_dqOEdjKGPLK8_enirGycciCY50PGQ_gUMbF9g7vY3si0ZdSTuag_YjULPBSXrvr6xuhPA4kDcYTjE06H-cSYafP0BI5Cd9BpT-z-QWP4y0Lz-ckSLVEhN4o7GM_E_lB72vrtQB_AJwiE"
+   }
+
+   ---------------------------------------------------------
+   ### Create a client of type password using console: ###
+   > artisan passport:client --password
+       name: admin-password
+   Password grant client created successfully.
+   Client ID: TODO
+   Client secret: TODO
+
+   POST http://api-rest-laravel.com.devel/api/oauth/token ->
+   with DATA { "grant_type":"password",
+            "client_id":"4",
+            "client_secret":"TODO",
+            "username":"admin@admin.com",
+            "password":"admin",
+          }
+   RESPONSE (like):
+   { "token_type": "Bearer",
+     "expires_in": 1800,
+     "access_token": "TODO",
+     "refresh_token": "TODO"
+   }
+
+
 
 -------------------------------------------------------------------------------
 In home, homestead/laptop
 -------------------------------------------------------------------------------
-Client ID: 3
-Client secret: jX3ClQOfHxDqzc6Z9tyHltq0Qh76VeB3HH82uTvP
-{ "token_type":"Bearer",
-  "expires_in":1799,
-  "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiN2E5N2QwMDA5M2Q2ZTNmMzZjOTU0OWUzODhlMDU3MDA4YzY1ODk5ZjA2MWQ1NjZlMWZhYzEzN2YzNGY2NzdiMDVhMWFmMmMyMmUzODZjZjQiLCJpYXQiOjE1ODA2Njk4MDEsIm5iZiI6MTU4MDY2OTgwMSwiZXhwIjoxNTgwNjcxNjAwLCJzdWIiOiIiLCJzY29wZXMiOltdfQ.npKjim9OctfAmUyPDCan2_Od_J81X9JdxVNd9vX3tSfrG8Vq7sW92_AtpoPVUBTZ1m4SdDw7FsemhEiRrxQ2XaxEANfW29n21YLw85dzNCAmEvSUQbhqIFf-7y5V_-Cpy89YRYFqw34Aq-rghV0K4lh3s23B3KRO3zVviWPzHkJyg4wQJAUpUFhnfw4oRlquHfGiBGOvLuBkCDJT5EmpVco1KTPqBEXE2zxID-Mff5V8OfR97IGBKbtle0bZQsEoaOPfHgyKafFD3sJgFJgvfJRiJd2hDny6U2VyhvrN27GCFIvQPZjCHfs6U-AktdCHFI5jrOujeu6QLKHbadA5wXHpy7z9ZAOgHTqwQ49t0_8Ldo7yd-MXxYrpDTqG2U5lvhW2XW0eHpf4UuvmLpOheI8bIutJsKRiqQhSmB_LeQZOrNzGfZKLU8ByT9cCpLlIfDrHdht_BgIe9vooXDenL2q-NFZL-I0XahmpSFU0sBUe0bsncMuDRjhdEnrsrsZHFEG2H3SFzT8YI8zKMWRhBDZJ4FP75nT6cCNd5oa1SFZl3i_LTHp2cT6HipuOYbb65FYnf7lGGbDczBb7rUUSCOCpAuSeSRMqnousIUrVt2j-_TxcJz37RNKz_V49tuYlZ-ZbiG0sIllOlcg65jLT1VtgHOu-FQlwHW21Xd-esI4"
-}
+   ### Create a client of type client credential using console: ###
+   > artisan passport:client
+       user-id: 0
+       name: "client"
+       callback: press enter
+   New client created successfully.
+   Client ID: 3
+   Client secret: jX3ClQOfHxDqzc6Z9tyHltq0Qh76VeB3HH82uTvP
 
+   POST http://api-rest-laravel.com.devel/api/oauth/token ->
+   with DATA { "grant_type":"client_credentials",
+               "client_id":"3",
+               "client_secret":"jX3ClQOfHxDqzc6Z9tyHltq0Qh76VeB3HH82uTvP"
+             }
+   RESPONSE (like):
+   { "token_type":"Bearer",
+     "expires_in":1799,
+     "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiN2E5N2QwMDA5M2Q2ZTNmMzZjOTU0OWUzODhlMDU3MDA4YzY1ODk5ZjA2MWQ1NjZlMWZhYzEzN2YzNGY2NzdiMDVhMWFmMmMyMmUzODZjZjQiLCJpYXQiOjE1ODA2Njk4MDEsIm5iZiI6MTU4MDY2OTgwMSwiZXhwIjoxNTgwNjcxNjAwLCJzdWIiOiIiLCJzY29wZXMiOltdfQ.npKjim9OctfAmUyPDCan2_Od_J81X9JdxVNd9vX3tSfrG8Vq7sW92_AtpoPVUBTZ1m4SdDw7FsemhEiRrxQ2XaxEANfW29n21YLw85dzNCAmEvSUQbhqIFf-7y5V_-Cpy89YRYFqw34Aq-rghV0K4lh3s23B3KRO3zVviWPzHkJyg4wQJAUpUFhnfw4oRlquHfGiBGOvLuBkCDJT5EmpVco1KTPqBEXE2zxID-Mff5V8OfR97IGBKbtle0bZQsEoaOPfHgyKafFD3sJgFJgvfJRiJd2hDny6U2VyhvrN27GCFIvQPZjCHfs6U-AktdCHFI5jrOujeu6QLKHbadA5wXHpy7z9ZAOgHTqwQ49t0_8Ldo7yd-MXxYrpDTqG2U5lvhW2XW0eHpf4UuvmLpOheI8bIutJsKRiqQhSmB_LeQZOrNzGfZKLU8ByT9cCpLlIfDrHdht_BgIe9vooXDenL2q-NFZL-I0XahmpSFU0sBUe0bsncMuDRjhdEnrsrsZHFEG2H3SFzT8YI8zKMWRhBDZJ4FP75nT6cCNd5oa1SFZl3i_LTHp2cT6HipuOYbb65FYnf7lGGbDczBb7rUUSCOCpAuSeSRMqnousIUrVt2j-_TxcJz37RNKz_V49tuYlZ-ZbiG0sIllOlcg65jLT1VtgHOu-FQlwHW21Xd-esI4"
+   }
 
+   ---------------------------------------------------------
+   ### Create a client of type password using console: ###
+   > artisan passport:client --password
+       name: admin-password
+   Password grant client created successfully.
+   Client ID: TODO
+   Client secret: TODO
+
+   POST http://api-rest-laravel.com.devel/api/oauth/token ->
+   with DATA { "grant_type":"password",
+            "client_id":"4",
+            "client_secret":"TODO",
+            "username":"admin@admin.com",
+            "password":"admin",
+          }
+   RESPONSE (like):
+   { "token_type": "Bearer",
+     "expires_in": 1800,
+     "access_token": "TODO",
+     "refresh_token": "TODO"
+   }
 
 -------------------------------------------------------------------------------
