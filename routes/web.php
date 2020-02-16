@@ -44,6 +44,8 @@ if ($disable_web_routes)
 
     // frontend section
     Route::get('/home/my-tokens', 'HomeController@getTokens')->name('personal-tokens');
+    Route::get('/home/my-clients', 'HomeController@getClients')->name('personal-clients');
+    Route::get('/home/authorized-clients', 'HomeController@getAuthorizedClients')->name('authorized-clients');
     Route::get('/home', 'HomeController@index')->name('home');
 
     Route::get('/', function () {
