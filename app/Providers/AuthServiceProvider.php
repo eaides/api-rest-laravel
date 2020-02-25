@@ -30,5 +30,8 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes();
         Passport::tokensExpireIn(Carbon::now()->addMinutes(30));
         Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
+
+        // todo: IS NOT A SECURE METHOD, disabled after TESTs
+        // Passport::enableImplicitGrant();
     }
 }
