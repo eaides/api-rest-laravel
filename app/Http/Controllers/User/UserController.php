@@ -37,6 +37,9 @@ class UserController extends RegisterController
                 ->except(['verify','store','resend']);
             $this->middleware('throttle:6,1')
                 ->only('verify', 'resend');
+
+            $this->middleware('scope:manage-account')
+                ->only(['show','update']);
         }
         else
         {

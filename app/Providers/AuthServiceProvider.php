@@ -30,8 +30,17 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes();
         Passport::tokensExpireIn(Carbon::now()->addMinutes(30));
         Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
-
-        // todo: IS NOT A SECURE METHOD, disabled after TESTs
+        // Passport::enableImplicitGrant() IS NOT A SECURE METHOD, disabled after TESTs
         // Passport::enableImplicitGrant();
+        Passport::tokensCan([
+            'purchase-products' => 'can create transaction to buy determinated products',
+            'manage-products' => 'create, view, modify and delete products',
+            'manage-account' => 'obtain info  of the account like name, email,state but no password.
+                Can modify datos (include password) but NO delete the account',
+            'manage-sections' => 'create, view, modify and delete sections',
+            'manage-posts' => 'create, view, modify and delete posts',
+            'read-general' => 'read information, categories where buy and sell, 
+                products selled or buyed, transactions, etc',
+        ]);
     }
 }
