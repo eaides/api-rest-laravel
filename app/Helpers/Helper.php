@@ -43,7 +43,10 @@ class Helper
     {
         $disable_web_routes = config('app.disable_web_routes');
         $prefix =  config('app.api_prefix');
-        if ($disable_web_routes || Route::current()->getPrefix()==$prefix) {
+        if (
+            Route::current() &&
+            ($disable_web_routes || Route::current()->getPrefix()==$prefix)
+        ) {
             return true;
         }
         return false;
